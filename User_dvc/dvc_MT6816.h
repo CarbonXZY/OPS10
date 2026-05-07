@@ -32,13 +32,6 @@ typedef struct
 class Class_MT6816
 {
 public:
-    enum
-    {
-        IDLE,
-        BUSY,
-        ERROR
-    } status;   // 状态机让dma不会影响时序
-
     // 初始化函数
     void Init(SPI_HandleTypeDef *hspi, GPIO_TypeDef *cs_gpio_port, uint16_t cs_gpio_pin);
 

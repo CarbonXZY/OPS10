@@ -630,16 +630,6 @@
           <GroupName>User_dvc</GroupName>
           <Files>
             <File>
-              <FileName>drv_MCC5983.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\User_dvc\drv_MCC5983.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>drv_MCC5983.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\User_dvc\drv_MCC5983.h</FilePath>
-            </File>
-            <File>
               <FileName>dvc_BMP388.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\User_dvc\dvc_BMP388.cpp</FilePath>
@@ -683,6 +673,16 @@
               <FileName>dvc_dwt.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\User_dvc\dvc_dwt.h</FilePath>
+            </File>
+            <File>
+              <FileName>dvc_MCC5983.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\User_dvc\dvc_MCC5983.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>dvc_MCC5983.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\User_dvc\dvc_MCC5983.h</FilePath>
             </File>
           </Files>
         </Group>

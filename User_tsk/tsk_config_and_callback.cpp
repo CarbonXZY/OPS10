@@ -4,19 +4,18 @@
 #include "dvc_ICM42688.h"
 #include "dvc_dwt.h"
 #include "stm32h5xx_hal.h"
-
+#include "dvc_BMP388.h"
 bool init_finished = false;
 Class_ICM42688 ICM42688;
-
+Class_BMP388 BMP388;
 void Task_Init(void)
 {
     DWT_Init();
     SPI_Init(&hspi2, nullptr);
-    SPI2_Manage_Object.Now_GPIOx = GPIOB;
-    SPI2_Manage_Object.Now_GPIO_Pin = GPIO_PIN_12;
     TIM_Init(&htim2, Task1ms_TIM2_Callback);
 
     ICM42688.Init(&hspi2);
+    BMP388.Init(&hi2c1);
 
     HAL_TIM_Base_Start_IT(&htim2);
 
@@ -26,5 +25,6 @@ void Task_Init(void)
 
 void Task1ms_TIM2_Callback()
 {
-    ICM42688.getAGT();
+    ICM42688.Get_Data();
+    BMP388.TIM_Calculate_PeriodElapsedCallback();
 }

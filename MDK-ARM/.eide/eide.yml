@@ -78,8 +78,6 @@ virtualFolder:
       folders: []
     - name: User_dvc
       files:
-        - path: ../User_dvc/drv_MCC5983.cpp
-        - path: ../User_dvc/drv_MCC5983.h
         - path: ../User_dvc/dvc_BMP388.cpp
         - path: ../User_dvc/dvc_BMP388.h
         - path: ../User_dvc/dvc_ICM42688.cpp
@@ -89,6 +87,8 @@ virtualFolder:
         - path: ../User_dvc/dvc_MT6816.h
         - path: ../User_dvc/dvc_dwt.cpp
         - path: ../User_dvc/dvc_dwt.h
+        - path: ../User_dvc/dvc_MCC5983.cpp
+        - path: ../User_dvc/dvc_MCC5983.h
       folders: []
     - name: User_alg
       files:

@@ -15,10 +15,10 @@
 #ifndef ICM42688_H
 #define ICM42688_H
 
-#include "stm32h5xx_hal.h"
 #include "drv_spi.h"
+#include "stm32h5xx_hal.h"
 
-#define delay 		HAL_Delay
+#define delay HAL_Delay
 
 /**
  * @brief ICM-42688-P惯性测量单元驱动类
@@ -28,34 +28,26 @@
 class Class_ICM42688
 {
 public:
-    // 状态机定义，与MT6816风格保持一致
-    enum
-    {
-        IDLE,   ///< 空闲状态
-        BUSY,   ///< 忙状态
-        ERROR   ///< 错误状态
-    } status;   ///< 状态机确保DMA不会影响时序
-
     /// 陀螺仪量程选择
     enum GyroFS : uint8_t
     {
-        dps2000 = 0x00,   ///< ±2000 dps
-        dps1000 = 0x01,   ///< ±1000 dps
-        dps500 = 0x02,    ///< ±500 dps
-        dps250 = 0x03,    ///< ±250 dps
-        dps125 = 0x04,    ///< ±125 dps
-        dps62_5 = 0x05,   ///< ±62.5 dps
-        dps31_25 = 0x06,  ///< ±31.25 dps
-        dps15_625 = 0x07  ///< ±15.625 dps
+        dps2000 = 0x00,  ///< ±2000 dps
+        dps1000 = 0x01,  ///< ±1000 dps
+        dps500 = 0x02,   ///< ±500 dps
+        dps250 = 0x03,   ///< ±250 dps
+        dps125 = 0x04,   ///< ±125 dps
+        dps62_5 = 0x05,  ///< ±62.5 dps
+        dps31_25 = 0x06, ///< ±31.25 dps
+        dps15_625 = 0x07 ///< ±15.625 dps
     };
 
     /// 加速度计量程选择
     enum AccelFS : uint8_t
     {
-        gpm16 = 0x00,     ///< ±16g
-        gpm8 = 0x01,      ///< ±8g
-        gpm4 = 0x02,      ///< ±4g
-        gpm2 = 0x03       ///< ±2g
+        gpm16 = 0x00, ///< ±16g
+        gpm8 = 0x01,  ///< ±8g
+        gpm4 = 0x02,  ///< ±4g
+        gpm2 = 0x03   ///< ±2g
     };
 
     /// 输出数据速率
@@ -81,22 +73,22 @@ public:
     /// 陀螺仪陷波滤波器带宽选择
     enum GyroNFBWsel : uint8_t
     {
-        nfBW1449Hz = 0x00,///< 1449Hz带宽
-        nfBW680z = 0x01,  ///< 680Hz带宽
-        nfBW329Hz = 0x02, ///< 329Hz带宽
-        nfBW162Hz = 0x03, ///< 162Hz带宽
-        nfBW80Hz = 0x04,  ///< 80Hz带宽
-        nfBW40Hz = 0x05,  ///< 40Hz带宽
-        nfBW20Hz = 0x06,  ///< 20Hz带宽
-        nfBW10Hz = 0x07,  ///< 10Hz带宽
+        nfBW1449Hz = 0x00, ///< 1449Hz带宽
+        nfBW680z = 0x01,   ///< 680Hz带宽
+        nfBW329Hz = 0x02,  ///< 329Hz带宽
+        nfBW162Hz = 0x03,  ///< 162Hz带宽
+        nfBW80Hz = 0x04,   ///< 80Hz带宽
+        nfBW40Hz = 0x05,   ///< 40Hz带宽
+        nfBW20Hz = 0x06,   ///< 20Hz带宽
+        nfBW10Hz = 0x07,   ///< 10Hz带宽
     };
 
     /// UI滤波器阶数
     enum UIFiltOrd : uint8_t
     {
-        first_order = 0x00,   ///< 一阶
-        second_order = 0x01,  ///< 二阶
-        third_order = 0x02,   ///< 三阶
+        first_order = 0x00,  ///< 一阶
+        second_order = 0x01, ///< 二阶
+        third_order = 0x02,  ///< 三阶
     };
 
     /**
@@ -200,154 +192,154 @@ public:
      *
      * @return int 成功返回1，失败返回负数错误码
      */
-    int getAGT();
+    int Get_Data();
 
     /**
      * @brief 读取ICM-42688-P原始数据
      *
      * @return int 成功返回1，失败返回负数错误码
      */
-    int getRawAGT();
+    int Get_Raw_Data();
 
     /**
      * @brief 获取X轴加速度数据
      *
      * @return float 加速度值(g)
      */
-    float accX() const { return _acc[0]; }
+    inline float Get_AccX() const { return Accel[0]; }
 
     /**
      * @brief 获取Y轴加速度数据
      *
      * @return float 加速度值(g)
      */
-    float accY() const { return _acc[1]; }
+    inline float Get_AccY() const { return Accel[1]; }
 
     /**
      * @brief 获取Z轴加速度数据
      *
      * @return float 加速度值(g)
      */
-    float accZ() const { return _acc[2]; }
+    inline float Get_AccZ() const { return Accel[2]; }
 
     /**
      * @brief 获取X轴陀螺仪数据
      *
      * @return float 角速度值(dps)
      */
-    float gyrX() const { return _gyr[0]; }
+    inline float Get_GyrX() const { return Gyro[0]; }
 
     /**
      * @brief 获取Y轴陀螺仪数据
      *
      * @return float 角速度值(dps)
      */
-    float gyrY() const { return _gyr[1]; }
+    inline float Get_GyrY() const { return Gyro[1]; }
 
     /**
      * @brief 获取Z轴陀螺仪数据
      *
      * @return float 角速度值(dps)
      */
-    float gyrZ() const { return _gyr[2]; }
+    inline float Get_GyrZ() const { return Gyro[2]; }
 
     /**
      * @brief 获取芯片温度
      *
      * @return float 温度值(°C)
      */
-    float temp() const { return Temperature; }
+    inline float Get_Temperature() const { return Temperature; }
 
     /**
      * @brief 获取X轴加速度原始数据
      *
      * @return int16_t 原始加速度数据
      */
-    int16_t rawAccX() const { return _rawAcc[0]; }
+    inline int16_t Get_RawAccX() const { return _rawAcc[0]; }
 
     /**
      * @brief 获取Y轴加速度原始数据
      *
      * @return int16_t 原始加速度数据
      */
-    int16_t rawAccY() const { return _rawAcc[1]; }
+    inline int16_t Get_RawAccY() const { return _rawAcc[1]; }
 
     /**
      * @brief 获取Z轴加速度原始数据
      *
      * @return int16_t 原始加速度数据
      */
-    int16_t rawAccZ() const { return _rawAcc[2]; }
+    inline int16_t Get_RawAccZ() const { return _rawAcc[2]; }
 
     /**
      * @brief 获取X轴陀螺仪原始数据
      *
      * @return int16_t 原始角速度数据
      */
-    int16_t rawGyrX() const { return _rawGyr[0]; }
+    inline int16_t Get_RawGyrX() const { return _rawGyr[0]; }
 
     /**
      * @brief 获取Y轴陀螺仪原始数据
      *
      * @return int16_t 原始角速度数据
      */
-    int16_t rawGyrY() const { return _rawGyr[1]; }
+    inline int16_t Get_RawGyrY() const { return _rawGyr[1]; }
 
     /**
      * @brief 获取Z轴陀螺仪原始数据
      *
      * @return int16_t 原始角速度数据
      */
-    int16_t rawGyrZ() const { return _rawGyr[2]; }
+    inline int16_t Get_RawGyrZ() const { return _rawGyr[2]; }
 
     /**
      * @brief 获取温度原始数据
      *
      * @return int16_t 原始温度数据
      */
-    int16_t rawTemp() const { return _rawT; }
+    inline int16_t Get_RawTemp() const { return _rawT; }
 
     /**
      * @brief 获取X轴加速度原始零偏
      *
      * @return int32_t 原始零偏值
      */
-    int32_t rawBiasAccX() const { return _rawAccBias[0]; }
+    inline int32_t Get_RawAccBiasX() const { return _rawAccBias[0]; }
 
     /**
      * @brief 获取Y轴加速度原始零偏
      *
      * @return int32_t 原始零偏值
      */
-    int32_t rawBiasAccY() const { return _rawAccBias[1]; }
+    inline int32_t Get_RawAccBiasY() const { return _rawAccBias[1]; }
 
     /**
      * @brief 获取Z轴加速度原始零偏
      *
      * @return int32_t 原始零偏值
      */
-    int32_t rawBiasAccZ() const { return _rawAccBias[2]; }
+    inline int32_t Get_RawAccBiasZ() const { return _rawAccBias[2]; }
 
     /**
      * @brief 获取X轴陀螺仪原始零偏
      *
      * @return int32_t 原始零偏值
      */
-    int32_t rawBiasGyrX() const { return _rawGyrBias[0]; }
+    inline int32_t Get_RawGyrBiasX() const { return _rawGyrBias[0]; }
 
     /**
      * @brief 获取Y轴陀螺仪原始零偏
      *
      * @return int32_t 原始零偏值
      */
-    int32_t rawBiasGyrY() const { return _rawGyrBias[1]; }
+    inline int32_t Get_RawGyrBiasY() const { return _rawGyrBias[1]; }
 
     /**
      * @brief 获取Z轴陀螺仪原始零偏
      *
      * @return int32_t 原始零偏值
      */
-    int32_t rawBiasGyrZ() const { return _rawGyrBias[2]; }
+    inline int32_t Get_RawGyrBiasZ() const { return _rawGyrBias[2]; }
 
     /**
      * @brief 计算零偏值
@@ -593,8 +585,8 @@ protected:
 
     /// 数据缓冲区
     float Temperature = 0.0f;
-    float _acc[3] = {};
-    float _gyr[3] = {};
+    float Accel[3] = {};
+    float Gyro[3] = {};
 
     int16_t _rawT = 0;
     int16_t _rawAcc[3] = {};
@@ -628,8 +620,8 @@ protected:
     float _gyrB[3] = {};
 
     /// 常量
-    static constexpr uint8_t WHO_AM_I = 0x47;       ///< UB0_REG_WHO_AM_I寄存器期望值
-    static constexpr int NUM_CALIB_SAMPLES = 1000;   ///< 陀螺仪/加速度计零偏校准采样数
+    static constexpr uint8_t WHO_AM_I = 0x47;      ///< UB0_REG_WHO_AM_I寄存器期望值
+    static constexpr int NUM_CALIB_SAMPLES = 1000; ///< 陀螺仪/加速度计零偏校准采样数
 
     /// 温度转换公式(见数据手册Sec 4.13)
     static constexpr float TEMP_DATA_REG_SCALE = 132.48f;

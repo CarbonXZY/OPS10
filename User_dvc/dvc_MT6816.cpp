@@ -59,7 +59,6 @@ void Class_MT6816::Init(SPI_HandleTypeDef *_hspi, GPIO_TypeDef *_cs_gpio_port, u
     SPI_Manage_Object->SPI_Handler = _hspi;
     SPI_Manage_Object->Now_GPIOx = _cs_gpio_port;
     SPI_Manage_Object->Now_GPIO_Pin = _cs_gpio_pin;
-    status = IDLE;
 
     Write_Pin(_cs_gpio_port, _cs_gpio_pin, GPIO_PIN_SET);
 
@@ -77,11 +76,6 @@ void Class_MT6816::Init(SPI_HandleTypeDef *_hspi, GPIO_TypeDef *_cs_gpio_port, u
  */
 uint8_t Class_MT6816::SPI_Transfer(uint8_t *tx_data, uint8_t *rx_data, uint16_t size)
 {
-    //    if (status == BUSY)
-    //    {
-    //        return HAL_BUSY; // 如果正在传输，返回忙状态
-    //    }
-    //    status = BUSY;
     return SPI_Transmit_Receive(SPI_Manage_Object->SPI_Handler, tx_data, rx_data, size);
 }
 

@@ -21,12 +21,10 @@ static HAL_StatusTypeDef SPI_Transmit_Receive(SPI_HandleTypeDef *hspi, uint8_t *
         return HAL_ERROR; // 参数检查
     }
 
-    if (hspi->Instance == SPI2)
-    {
-        HAL_GPIO_WritePin(SPI2_Manage_Object.Now_GPIOx, SPI2_Manage_Object.Now_GPIO_Pin, GPIO_PIN_RESET); // 片选拉低
-        HAL_SPI_TransmitReceive(hspi, tx_data, rx_data, size, 100);
-        HAL_GPIO_WritePin(SPI2_Manage_Object.Now_GPIOx, SPI2_Manage_Object.Now_GPIO_Pin, GPIO_PIN_SET); // 片选拉高
-    }
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET); // 片选拉低
+    HAL_SPI_TransmitReceive(hspi, tx_data, rx_data, size, 100);
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET); // 片选拉高
+
     return HAL_OK;
 }
 
@@ -367,22 +365,22 @@ int Class_ICM42688::disableDataReadyInterrupt()
  *
  * @return int 成功返回1，失败返回负数错误码
  */
-int Class_ICM42688::getAGT()
+int Class_ICM42688::Get_Data()
 {
-    if (getRawAGT() < 0)
+    if (Get_Raw_Data() < 0)
     {
         return -1;
     }
 
-    _t = (static_cast<float>(_rawT) / TEMP_DATA_REG_SCALE) + TEMP_OFFSET;
+    Temperature = (static_cast<float>(_rawT) / TEMP_DATA_REG_SCALE) + TEMP_OFFSET;
 
-    _acc[0] = ((_rawAcc[0] * _accelScale) - _accB[0]) * _accS[0];
-    _acc[1] = ((_rawAcc[1] * _accelScale) - _accB[1]) * _accS[1];
-    _acc[2] = ((_rawAcc[2] * _accelScale) - _accB[2]) * _accS[2];
+    Accel[0] = ((_rawAcc[0] * _accelScale) - _accB[0]) * _accS[0];
+    Accel[1] = ((_rawAcc[1] * _accelScale) - _accB[1]) * _accS[1];
+    Accel[2] = ((_rawAcc[2] * _accelScale) - _accB[2]) * _accS[2];
 
-    _gyr[0] = (_rawGyr[0] * _gyroScale) - _gyrB[0];
-    _gyr[1] = (_rawGyr[1] * _gyroScale) - _gyrB[1];
-    _gyr[2] = (_rawGyr[2] * _gyroScale) - _gyrB[2];
+    Gyro[0] = (_rawGyr[0] * _gyroScale) - _gyrB[0];
+    Gyro[1] = (_rawGyr[1] * _gyroScale) - _gyrB[1];
+    Gyro[2] = (_rawGyr[2] * _gyroScale) - _gyrB[2];
 
     return 1;
 }
@@ -392,7 +390,7 @@ int Class_ICM42688::getAGT()
  *
  * @return int 成功返回1，失败返回负数错误码
  */
-int Class_ICM42688::getRawAGT()
+int Class_ICM42688::Get_Raw_Data()
 {
     if (readRegisters(UB0_REG_TEMP_DATA1, 14, _buffer) < 0)
     {
@@ -625,10 +623,10 @@ int Class_ICM42688::calibrateGyro()
     _gyroBD[2] = 0;
     for (size_t i = 0; i < NUM_CALIB_SAMPLES; i++)
     {
-        getAGT();
-        _gyroBD[0] += (gyrX() + _gyrB[0]) / NUM_CALIB_SAMPLES;
-        _gyroBD[1] += (gyrY() + _gyrB[1]) / NUM_CALIB_SAMPLES;
-        _gyroBD[2] += (gyrZ() + _gyrB[2]) / NUM_CALIB_SAMPLES;
+        Get_Data();
+        _gyroBD[0] += (Get_GyrX() + _gyrB[0]) / NUM_CALIB_SAMPLES;
+        _gyroBD[1] += (Get_GyrY() + _gyrB[1]) / NUM_CALIB_SAMPLES;
+        _gyroBD[2] += (Get_GyrZ() + _gyrB[2]) / NUM_CALIB_SAMPLES;
         delay(1);
     }
     _gyrB[0] = _gyroBD[0];
@@ -726,10 +724,10 @@ int Class_ICM42688::calibrateAccel()
     _accBD[2] = 0;
     for (size_t i = 0; i < NUM_CALIB_SAMPLES; i++)
     {
-        getAGT();
-        _accBD[0] += (accX() / _accS[0] + _accB[0]) / NUM_CALIB_SAMPLES;
-        _accBD[1] += (accY() / _accS[1] + _accB[1]) / NUM_CALIB_SAMPLES;
-        _accBD[2] += (accZ() / _accS[2] + _accB[2]) / NUM_CALIB_SAMPLES;
+        Get_Data();
+        _accBD[0] += (Get_AccX() / _accS[0] + _accB[0]) / NUM_CALIB_SAMPLES;
+        _accBD[1] += (Get_AccY() / _accS[1] + _accB[1]) / NUM_CALIB_SAMPLES;
+        _accBD[2] += (Get_AccZ() / _accS[2] + _accB[2]) / NUM_CALIB_SAMPLES;
         delay(1);
     }
     if (_accBD[0] > 0.9f)
@@ -1043,7 +1041,7 @@ int Class_ICM42688::computeOffsets()
     // 记录原始值并累加样本
     for (size_t i = 0; i < NUM_CALIB_SAMPLES; i++)
     {
-        getRawAGT();
+        Get_Raw_Data();
         _rawAccBias[0] += _rawAcc[0];
         _rawAccBias[1] += _rawAcc[1];
         _rawAccBias[2] += _rawAcc[2];
@@ -1386,7 +1384,7 @@ int Class_ICM42688::setGyroNotchFilter(float gyroNFfreq_x, float gyroNFfreq_y, f
     uint16_t nf_coswz;
     uint8_t gyro_nf_coswz_low[3] = {0};
     uint8_t buff = 0;
-    float Fdrv = 19200 / (clkdiv * 10.0f);                       // 单位kHz (19.2MHz = 19200 kHz)
+    float Fdrv = 19200 / (clkdiv * 10.0f);                                // 单位kHz (19.2MHz = 19200 kHz)
     const float fdesired[3] = {gyroNFfreq_x, gyroNFfreq_y, gyroNFfreq_z}; // 单位kHz - fdesired介于1kHz到3kHz
     for (size_t ii = 0; ii < 3; ii++)
     {
