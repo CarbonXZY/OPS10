@@ -1,0 +1,94 @@
+/**
+ * @file drv_tim.cpp
+ * @author Lucy (2478427315@qq.com)
+ * @brief 仿照SCUT-Robotlab改写的TIM定时器初始化与配置流程
+ * @version 0.1
+ * @date 2024-10-19 0.1 24-25赛季定稿
+ *
+ * @copyright RoboPionner
+ *
+ */
+
+/* Includes ------------------------------------------------------------------*/
+
+#include "drv_tim.h"
+
+/* Private macros ------------------------------------------------------------*/
+
+/* Private types -------------------------------------------------------------*/
+
+/* Private variables ---------------------------------------------------------*/
+
+Struct_TIM_Manage_Object TIM1_Manage_Object;
+Struct_TIM_Manage_Object TIM2_Manage_Object;
+Struct_TIM_Manage_Object TIM3_Manage_Object;
+
+
+/* Private function declarations ---------------------------------------------*/
+
+/* function prototypes -------------------------------------------------------*/
+
+/**
+ * @brief 初始化TIM定时器
+ *
+ * @param htim 定时器编号
+ * @param Callback_Function 处理回调函数
+ */
+void TIM_Init(TIM_HandleTypeDef *htim, TIM_Call_Back Callback_Function)
+{
+    if (htim->Instance == TIM1)
+    {
+        TIM1_Manage_Object.TIM_Handler = htim;
+        TIM1_Manage_Object.Callback_Function = Callback_Function;
+    }
+    else if (htim->Instance == TIM2)
+    {
+        TIM2_Manage_Object.TIM_Handler = htim;
+        TIM2_Manage_Object.Callback_Function = Callback_Function;
+    }
+    else if (htim->Instance == TIM3)
+    {
+        TIM3_Manage_Object.TIM_Handler = htim;
+        TIM3_Manage_Object.Callback_Function = Callback_Function;
+    }
+}
+
+/**
+ * @brief HAL库TIM定时器中断
+ *
+ * @param htim TIM编号
+ */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+    // 判断程序初始化完成
+    if (init_finished == false)
+    {
+        return;
+    }
+
+    // 选择回调函数
+    if (htim->Instance == TIM1)
+    {
+        if(TIM1_Manage_Object.Callback_Function != nullptr)
+        {
+            TIM1_Manage_Object.Callback_Function();
+        }
+    }
+    else if (htim->Instance == TIM2)
+    {
+        if(TIM2_Manage_Object.Callback_Function != nullptr)
+        {
+            TIM2_Manage_Object.Callback_Function();
+        }
+    }
+    else if (htim->Instance == TIM3)
+    {
+        if(TIM3_Manage_Object.Callback_Function != nullptr)
+        {
+            TIM3_Manage_Object.Callback_Function();
+        }
+    }
+  
+}
+
+/************************ COPYRIGHT(C) ROBOPIONNER **************************/
