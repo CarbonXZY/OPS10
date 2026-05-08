@@ -1,5 +1,5 @@
 ops10/dvc_icm42688.o: ..\User_dvc\dvc_ICM42688.cpp \
-  ..\User_dvc\dvc_ICM42688.h \
+  ..\User_dvc\dvc_ICM42688.h ..\User_drv\drv_spi.h \
   ..\Drivers\STM32H5xx_HAL_Driver\Inc\stm32h5xx_hal.h \
   ..\Core\Inc\stm32h5xx_hal_conf.h \
   ..\Drivers\STM32H5xx_HAL_Driver\Inc\stm32h5xx_hal_rcc.h \
@@ -31,5 +31,5 @@ ops10/dvc_icm42688.o: ..\User_dvc\dvc_ICM42688.cpp \
   ..\Drivers\STM32H5xx_HAL_Driver\Inc\stm32h5xx_hal_pcd_ex.h \
   ..\Drivers\STM32H5xx_HAL_Driver\Inc\stm32h5xx_hal_exti.h \
   ..\Drivers\STM32H5xx_HAL_Driver\Inc\stm32h5xx_hal_fdcan.h \
-  ..\User_drv\drv_spi.h ..\Core\Inc\spi.h ..\Core\Inc\main.h \
-  ..\User_dvc\dvc_ICM42688_reg.h ..\User_tsk\tsk_config_and_callback.h
+  ..\Core\Inc\spi.h ..\Core\Inc\main.h ..\User_dvc\dvc_ICM42688_reg.h \
+  ..\User_tsk\tsk_config_and_callback.h

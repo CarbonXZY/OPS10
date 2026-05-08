@@ -32,4 +32,6 @@ ops10/tsk_config_and_callback.o: ..\User_tsk\tsk_config_and_callback.cpp \
   ..\Drivers\STM32H5xx_HAL_Driver\Inc\stm32h5xx_hal_exti.h \
   ..\Drivers\STM32H5xx_HAL_Driver\Inc\stm32h5xx_hal_fdcan.h \
   ..\Core\Inc\spi.h ..\Core\Inc\main.h ..\User_drv\drv_tim.h \
-  ..\User_dvc\dvc_ICM42688.h ..\User_dvc\dvc_dwt.h
+  ..\User_ita\ita_chaiot.h ..\User_dvc\dvc_MMC5983.h ..\Core\Inc\i2c.h \
+  ..\User_dvc\dvc_BMP388.h ..\User_dvc\dvc_ICM42688.h \
+  ..\User_dvc\dvc_MT6816.h ..\User_dvc\dvc_dwt.h

@@ -134,11 +134,11 @@
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
-            <DriverSelection>4101</DriverSelection>
+            <DriverSelection>4102</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2V8M.DLL</Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -675,14 +675,14 @@
               <FilePath>..\User_dvc\dvc_dwt.h</FilePath>
             </File>
             <File>
-              <FileName>dvc_MCC5983.cpp</FileName>
+              <FileName>dvc_MMC5983.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\User_dvc\dvc_MCC5983.cpp</FilePath>
+              <FilePath>..\User_dvc\dvc_MMC5983.cpp</FilePath>
             </File>
             <File>
-              <FileName>dvc_MCC5983.h</FileName>
+              <FileName>dvc_MMC5983.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\User_dvc\dvc_MCC5983.h</FilePath>
+              <FilePath>..\User_dvc\dvc_MMC5983.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -698,6 +698,26 @@
               <FileName>alg_fsm.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\User_alg\alg_fsm.h</FilePath>
+            </File>
+            <File>
+              <FileName>QuaternionEKF.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\User_alg\QuaternionEKF.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>QuaternionEKF.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\User_alg\QuaternionEKF.h</FilePath>
+            </File>
+            <File>
+              <FileName>kalman_filter.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\User_alg\kalman_filter.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>kalman_filter.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\User_alg\kalman_filter.h</FilePath>
             </File>
           </Files>
         </Group>

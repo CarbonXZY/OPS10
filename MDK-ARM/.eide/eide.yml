@@ -87,13 +87,17 @@ virtualFolder:
         - path: ../User_dvc/dvc_MT6816.h
         - path: ../User_dvc/dvc_dwt.cpp
         - path: ../User_dvc/dvc_dwt.h
-        - path: ../User_dvc/dvc_MCC5983.cpp
-        - path: ../User_dvc/dvc_MCC5983.h
+        - path: ../User_dvc/dvc_MMC5983.cpp
+        - path: ../User_dvc/dvc_MMC5983.h
       folders: []
     - name: User_alg
       files:
         - path: ../User_alg/alg_fsm.cpp
         - path: ../User_alg/alg_fsm.h
+        - path: ../User_alg/QuaternionEKF.cpp
+        - path: ../User_alg/QuaternionEKF.h
+        - path: ../User_alg/kalman_filter.cpp
+        - path: ../User_alg/kalman_filter.h
       folders: []
     - name: User_ita
       files:
