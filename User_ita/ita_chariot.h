@@ -1,0 +1,48 @@
+#ifndef ITA_CHARIOT_H
+#define ITA_CHARIOT_H
+
+#include "QuaternionEKF.h"
+#include "dvc_BMP388.h"
+#include "dvc_ICM42688.h"
+#include "dvc_MMC5983.h"
+#include "dvc_MT6816.h"
+#include "drv_can.h"
+#include "arm_math.h"
+
+class Class_Chariot
+{
+public:
+    // 传感器对象
+    // BMP388气压计
+    Class_BMP388 bmp388;
+
+    // ICM42688陀螺仪和加速度计
+    Class_ICM42688 icm42688;
+
+    // MMC5983磁力计
+    Class_MMC5983 mmc5983;
+
+    // MT6816角度传感器
+    Class_MT6816 mt6816_x;
+    Class_MT6816 mt6816_y;
+
+    // 扩展卡尔曼滤波器指针
+    QEKF_INS_t *ekf = &QEKF_INS;
+
+    void Init();
+    void TIM_Calculate_PeriodElapsedCallback();
+    void TIM_Communicate_PeriodElapsedCallback();
+
+private:
+    float Position_X = 0.0f;
+    float Position_Y = 0.0f;
+    //float Position_Z; // 未来需要高度可以添加
+
+    float last_x = 0.0f, last_y = 0.0f; // 上一次的位置
+    float now_x = 0.0f, now_y = 0.0f; // 当前的位置
+
+
+    void Update_SensorData();
+    void Calculate_Position();
+};
+#endif

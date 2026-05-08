@@ -101,8 +101,8 @@ virtualFolder:
       folders: []
     - name: User_ita
       files:
-        - path: ../User_ita/ita_chaiot.cpp
-        - path: ../User_ita/ita_chaiot.h
+        - path: ../User_ita/ita_chariot.cpp
+        - path: ../User_ita/ita_chariot.h
       folders: []
     - name: User_tsk
       files:

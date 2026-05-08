@@ -1,7 +1,7 @@
 #include "tsk_config_and_callback.h"
 #include "drv_spi.h"
 #include "drv_tim.h"
-#include "ita_chaiot.h"
+#include "ita_chariot.h"
 #include "dvc_dwt.h"
 #include "stm32h5xx_hal.h"
 
@@ -25,4 +25,5 @@ void Task_Init(void)
 void Task1ms_TIM2_Callback()
 {
     chaiot.TIM_Calculate_PeriodElapsedCallback();
+    chaiot.TIM_Communicate_PeriodElapsedCallback();
 }

@@ -120,7 +120,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>綮?</Name>
+          <Name>漶?</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -179,6 +179,11 @@
           <count>5</count>
           <WinNumber>1</WinNumber>
           <ItemText>tick_later,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>6</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>chaiot</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>
@@ -1030,7 +1035,7 @@
 
   <Group>
     <GroupName>User_ita</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -1041,8 +1046,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\User_ita\ita_chaiot.cpp</PathWithFileName>
-      <FilenameWithoutPath>ita_chaiot.cpp</FilenameWithoutPath>
+      <PathWithFileName>..\User_ita\ita_chariot.cpp</PathWithFileName>
+      <FilenameWithoutPath>ita_chariot.cpp</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -1053,8 +1058,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\User_ita\ita_chaiot.h</PathWithFileName>
-      <FilenameWithoutPath>ita_chaiot.h</FilenameWithoutPath>
+      <PathWithFileName>..\User_ita\ita_chariot.h</PathWithFileName>
+      <FilenameWithoutPath>ita_chariot.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

@@ -725,14 +725,14 @@
           <GroupName>User_ita</GroupName>
           <Files>
             <File>
-              <FileName>ita_chaiot.cpp</FileName>
+              <FileName>ita_chariot.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\User_ita\ita_chaiot.cpp</FilePath>
+              <FilePath>..\User_ita\ita_chariot.cpp</FilePath>
             </File>
             <File>
-              <FileName>ita_chaiot.h</FileName>
+              <FileName>ita_chariot.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\User_ita\ita_chaiot.h</FilePath>
+              <FilePath>..\User_ita\ita_chariot.h</FilePath>
             </File>
           </Files>
         </Group>
