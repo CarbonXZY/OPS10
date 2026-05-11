@@ -1,6 +1,7 @@
 #ifndef ITA_CHARIOT_H
 #define ITA_CHARIOT_H
 
+#include "Mahony.h"
 #include "QuaternionEKF.h"
 #include "dvc_BMP388.h"
 #include "dvc_ICM42688.h"
@@ -25,9 +26,6 @@ public:
     // MT6816角度传感器
     Class_MT6816 mt6816_x;
     Class_MT6816 mt6816_y;
-
-    // 扩展卡尔曼滤波器指针
-    QEKF_INS_t *ekf = &QEKF_INS;
 
     void Init();
     void TIM_Calculate_PeriodElapsedCallback();

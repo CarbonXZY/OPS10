@@ -53,8 +53,8 @@ int Class_ICM42688::Init(SPI_HandleTypeDef *hspi)
         return -4;
     }
 
-    // 16G为默认值 -- 用于设置加速度计量程缩放因子
-    int ret = setAccelFS(gpm16);
+    // 2G为默认值 -- 用于设置加速度计量程缩放因子（降低噪声，提升分辨率）
+    int ret = setAccelFS(gpm2);
     if (ret < 0)
     {
         return ret;
@@ -67,8 +67,8 @@ int Class_ICM42688::Init(SPI_HandleTypeDef *hspi)
         return ret;
     }
 
-    // 禁用内部滤波器(陷波滤波器、抗混叠滤波器、UI滤波器组)
-    if (setFilters(false, false) < 0)
+    // 启用内部滤波器(陷波滤波器、抗混叠滤波器、UI滤波器组)
+    if (setFilters(true, true) < 0)
     {
         return -7;
     }
@@ -77,6 +77,15 @@ int Class_ICM42688::Init(SPI_HandleTypeDef *hspi)
     if (calibrateGyro() < 0)
     {
         return -8;
+    }
+		
+	if (setGyroODR(odr100) < 0) // 设置100Hz输出，匹配Mahony采样率
+    {
+        return -9;
+    }
+    if (setAccelODR(odr100) < 0)
+    {
+        return -10;
     }
     // 初始化成功，返回1
     return 1;
@@ -610,9 +619,9 @@ void Class_ICM42688_FIFO::getFifoTemperature_C(size_t *size, float *data)
  */
 int Class_ICM42688::calibrateGyro()
 {
-    // 使用较低量程(更高分辨率)，因为IMU静止不动
+    // 使用与运行相同的量程(更准确)，因为IMU静止不动
     const GyroFS current_fssel = _gyroFS;
-    if (setGyroFS(dps250) < 0)
+    if (setGyroFS(current_fssel) < 0)
     {
         return -1;
     }

@@ -13,6 +13,7 @@
 /* 包含头文件 ---------------------------------------------------------------*/
 #include "i2c.h"
 #include "main.h"
+#include "drv_math.h"
 
 /* 宏定义 -------------------------------------------------------------------*/
 // I2C 设备地址（7位地址 0x30，左移1位变为8位写地址）
@@ -88,7 +89,7 @@
 #define MMC5983MA_TEMP_OFFSET -75.0f  // 0x00 = -75°C
 
 // 超时定义（毫秒）
-#define MMC5983MA_MEASURE_TIMEOUT 1000
+#define MMC5983MA_MEASURE_TIMEOUT 50000
 #define MMC5983MA_SET_RESET_DELAY 10
 
 /* 枚举类型定义 -------------------------------------------------------------*/
@@ -126,6 +127,8 @@ typedef struct
 class Class_MMC5983
 {
 public:
+    MMC5983MA_MagnetData_t magnet_data; // 存储磁场数据的结构体
+    MMC5983MA_TempData_t temp_data;     // 存储温度数据的结构体
     /**
      * @brief 初始化 MMC5983MA 传感器
      * @param hi2c I2C 句柄指针
@@ -213,11 +216,11 @@ public:
     MMC5983MA_Status_t ReadProductID(uint8_t *id);
 
     /**
-     * @brief 使用 SET/RESET 方法读取磁场（消除了 Offset 误差）
+     * @brief 使用 SET/RESET 方法读取磁场Offset
      * @param data 存储磁场数据的结构体指针
      * @return MMC5983MA_Status_t
      */
-    MMC5983MA_Status_t ReadMagnetWithOffsetCancellation();
+    MMC5983MA_Status_t ReadMagnetOffset();
 
     /**
      * @brief 软复位传感器
@@ -228,10 +231,9 @@ public:
 private:
     I2C_HandleTypeDef *hi2c; // I2C 句柄
 
-    MMC5983MA_MagnetData_t magnet_data; // 存储磁场数据的结构体
-    MMC5983MA_TempData_t temp_data;     // 存储温度数据的结构体
-
     uint8_t status; // 存储状态寄存器值
+
+    float x_offset = 0.0f, y_offset = 0.0f, z_offset = 0.0f; // 磁场偏移值
 
     HAL_StatusTypeDef I2C_WriteReg(uint8_t reg, uint8_t data);
     HAL_StatusTypeDef I2C_ReadReg(uint8_t reg, uint8_t *data);

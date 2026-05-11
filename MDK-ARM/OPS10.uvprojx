@@ -719,6 +719,16 @@
               <FileType>5</FileType>
               <FilePath>..\User_alg\kalman_filter.h</FilePath>
             </File>
+            <File>
+              <FileName>Mahony.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\User_alg\Mahony.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Mahony.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\User_alg\Mahony.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

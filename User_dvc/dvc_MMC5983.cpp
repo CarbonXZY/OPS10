@@ -144,7 +144,8 @@ MMC5983MA_Status_t Class_MMC5983::ReadMagnet()
 
     // 2. 用 DWT 轮询等待测量完成（不依赖 systick，在定时中断回调里安全）
     uint32_t tick_start = DWT_GetCurrentTimeUs();
-    do {
+    do
+    {
         if (I2C_ReadReg(MMC5983MA_REG_STATUS, &status) != HAL_OK)
         {
             return MMC5983MA_ERROR;
@@ -164,13 +165,13 @@ MMC5983MA_Status_t Class_MMC5983::ReadMagnet()
     y_raw = (int16_t)((raw[2] << 8) | raw[3]);
     z_raw = (int16_t)((raw[4] << 8) | raw[5]);
 
-    // 5. 填充结构体
-    magnet_data.x = x_raw;
-    magnet_data.y = y_raw;
-    magnet_data.z = z_raw;
-    magnet_data.x_gauss = (float)x_raw * MMC5983MA_G_PER_LSB_16BIT;
-    magnet_data.y_gauss = (float)y_raw * MMC5983MA_G_PER_LSB_16BIT;
-    magnet_data.z_gauss = (float)z_raw * MMC5983MA_G_PER_LSB_16BIT;
+    // 5. 填充结构体（补偿 offset）
+    magnet_data.x = x_raw - (int16_t)x_offset;
+    magnet_data.y = y_raw - (int16_t)y_offset;
+    magnet_data.z = z_raw - (int16_t)z_offset;
+    magnet_data.x_gauss = (float)magnet_data.x * MMC5983MA_G_PER_LSB_16BIT;
+    magnet_data.y_gauss = (float)magnet_data.y * MMC5983MA_G_PER_LSB_16BIT;
+    magnet_data.z_gauss = (float)magnet_data.z * MMC5983MA_G_PER_LSB_16BIT;
 
     return MMC5983MA_OK;
 }
@@ -192,7 +193,8 @@ MMC5983MA_Status_t Class_MMC5983::ReadMagnet18()
     }
 
     uint32_t tick_start = DWT_GetCurrentTimeUs();
-    do {
+    do
+    {
         if (I2C_ReadReg(MMC5983MA_REG_STATUS, &status) != HAL_OK)
         {
             return MMC5983MA_ERROR;
@@ -213,9 +215,16 @@ MMC5983MA_Status_t Class_MMC5983::ReadMagnet18()
     }
 
     // 4. 组合成 18 位整数
-    magnet_data.x = ((int32_t)raw[0] << 10) | ((int32_t)raw[1] << 2) | ((low >> 0) & 0x03);
-    magnet_data.y = ((int32_t)raw[2] << 10) | ((int32_t)raw[3] << 2) | ((low >> 2) & 0x03);
-    magnet_data.z = ((int32_t)raw[4] << 10) | ((int32_t)raw[5] << 2) | ((low >> 4) & 0x03);
+    int32_t x_raw18 = ((int32_t)raw[0] << 10) | ((int32_t)raw[1] << 2) | ((low >> 0) & 0x03);
+    int32_t y_raw18 = ((int32_t)raw[2] << 10) | ((int32_t)raw[3] << 2) | ((low >> 2) & 0x03);
+    int32_t z_raw18 = ((int32_t)raw[4] << 10) | ((int32_t)raw[5] << 2) | ((low >> 4) & 0x03);
+
+    magnet_data.x = (int16_t)(x_raw18 - (int32_t)(x_offset * 4.0f));
+    magnet_data.y = (int16_t)(y_raw18 - (int32_t)(y_offset * 4.0f));
+    magnet_data.z = (int16_t)(z_raw18 - (int32_t)(z_offset * 4.0f));
+    magnet_data.x_gauss = (float)magnet_data.x * MMC5983MA_G_PER_LSB_18BIT;
+    magnet_data.y_gauss = (float)magnet_data.y * MMC5983MA_G_PER_LSB_18BIT;
+    magnet_data.z_gauss = (float)magnet_data.z * MMC5983MA_G_PER_LSB_18BIT;
 
     return MMC5983MA_OK;
 }
@@ -237,7 +246,8 @@ MMC5983MA_Status_t Class_MMC5983::ReadTemperature()
 
     // 2. 用 DWT 轮询等待测量完成（不依赖 systick，在定时中断回调里安全）
     uint32_t tick_start = DWT_GetCurrentTimeUs();
-    do {
+    do
+    {
         if (I2C_ReadReg(MMC5983MA_REG_STATUS, &status) != HAL_OK)
         {
             return MMC5983MA_ERROR;
@@ -385,65 +395,60 @@ MMC5983MA_Status_t Class_MMC5983::ReadProductID(uint8_t *id)
 }
 
 /**
- * @brief 使用 SET/RESET 方法读取磁场（消除 Offset 误差）
+ * @brief 使用 SET/RESET 方法测量磁场 offset
  *
  * 原理：
- *   输出1 (SET后)
-= +H + Offset
+ *   输出1 (SET后)  = +H + Offset
  *   输出2 (RESET后) = -H + Offset
  *   真实 H = (输出1 - 输出2) / 2
  *   Offset = (输出1 + 输出2) / 2
  */
-MMC5983MA_Status_t Class_MMC5983::ReadMagnetWithOffsetCancellation()
+MMC5983MA_Status_t Class_MMC5983::ReadMagnetOffset()
 {
     MMC5983MA_MagnetData_t data_set, data_reset;
-    int16_t x_sum, y_sum, z_sum;
-    int16_t x_diff, y_diff, z_diff;
+    float x_offset_acc = 0.0f, y_offset_acc = 0.0f, z_offset_acc = 0.0f;
 
-    // 1. 执行 SET 操作
-    if (DoSet() != MMC5983MA_OK)
+    x_offset = 0.0f;
+    y_offset = 0.0f;
+    z_offset = 0.0f;
+
+    for (int i = 0; i < 20; i++)
     {
-        return MMC5983MA_ERROR;
+        // 1. SET 测量
+        if (DoSet() != MMC5983MA_OK)
+        {
+            return MMC5983MA_ERROR;
+        }
+        HAL_Delay(MMC5983MA_SET_RESET_DELAY);
+
+        if (ReadMagnet() != MMC5983MA_OK)
+        {
+            return MMC5983MA_ERROR;
+        }
+        data_set = magnet_data;
+
+        // 2. RESET 测量
+        if (DoReset() != MMC5983MA_OK)
+        {
+            return MMC5983MA_ERROR;
+        }
+        HAL_Delay(MMC5983MA_SET_RESET_DELAY);
+
+        if (ReadMagnet() != MMC5983MA_OK)
+        {
+            return MMC5983MA_ERROR;
+        }
+        data_reset = magnet_data;
+
+        // 3. 计算 offset
+        x_offset_acc += (float)((int32_t)data_set.x + (int32_t)data_reset.x) / 2.0f;
+        y_offset_acc += (float)((int32_t)data_set.y + (int32_t)data_reset.y) / 2.0f;
+        z_offset_acc += (float)((int32_t)data_set.z + (int32_t)data_reset.z) / 2.0f;
     }
-    HAL_Delay(MMC5983MA_SET_RESET_DELAY);
 
-    // 2. 测量（SET后）
-    if (ReadMagnet() != MMC5983MA_OK)
-    {
-        return MMC5983MA_ERROR;
-    }
-
-    // 3. 执行 RESET 操作
-    if (DoReset() != MMC5983MA_OK)
-    {
-        return MMC5983MA_ERROR;
-    }
-    HAL_Delay(MMC5983MA_SET_RESET_DELAY);
-
-    // 4. 测量（RESET后）
-    if (ReadMagnet() != MMC5983MA_OK)
-    {
-        return MMC5983MA_ERROR;
-    }
-
-    // 5. 计算真实磁场值（消除 Offset）
-    // 注意：RESET 后磁场极性相反，所以用 SET - RESET 再除以 2
-    x_diff = (int16_t)(data_set.x - data_reset.x);
-    y_diff = (int16_t)(data_set.y - data_reset.y);
-    z_diff = (int16_t)(data_set.z - data_reset.z);
-
-    magnet_data.x = x_diff / 2;
-    magnet_data.y = y_diff / 2;
-    magnet_data.z = z_diff / 2;
-
-    magnet_data.x_gauss = (float)magnet_data.x * MMC5983MA_G_PER_LSB_16BIT;
-    magnet_data.y_gauss = (float)magnet_data.y * MMC5983MA_G_PER_LSB_16BIT;
-    magnet_data.z_gauss = (float)magnet_data.z * MMC5983MA_G_PER_LSB_16BIT;
-
-    // 可选：计算并存储 Offset（可用于后续快速补偿）
-    // x_sum = (data_set.x + data_reset.x) / 2;
-    // y_sum = (data_set.y + data_reset.y) / 2;
-    // z_sum = (data_set.z + data_reset.z) / 2;
+    x_offset = x_offset_acc / 20.0f;
+    y_offset = y_offset_acc / 20.0f;
+    z_offset = z_offset_acc / 20.0f;
 
     return MMC5983MA_OK;
 }

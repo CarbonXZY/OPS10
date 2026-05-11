@@ -98,6 +98,8 @@ virtualFolder:
         - path: ../User_alg/QuaternionEKF.h
         - path: ../User_alg/kalman_filter.cpp
         - path: ../User_alg/kalman_filter.h
+        - path: ../User_alg/Mahony.cpp
+        - path: ../User_alg/Mahony.h
       folders: []
     - name: User_ita
       files:

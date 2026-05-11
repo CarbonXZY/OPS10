@@ -47,6 +47,7 @@
 "ops10\alg_fsm.o"
 "ops10\quaternionekf.o"
 "ops10\kalman_filter.o"
+"ops10\mahony.o"
 "ops10\ita_chariot.o"
 "ops10\tsk_config_and_callback.o"
 "..\Middlewares\ST\ARM\DSP\Lib\arm_ARMv8MMLlfsp_math.lib"
