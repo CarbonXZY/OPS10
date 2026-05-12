@@ -3,11 +3,11 @@
 <title>Static Call Graph - [OPS10\OPS10.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image OPS10\OPS10.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6240002: Last Updated: Mon May 11 22:03:24 2026
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6240002: Last Updated: Wed May 13 01:08:48 2026
 <BR><P>
-<H3>Maximum Stack Usage =        416 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        404 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-__rt_entry_main &rArr; main &rArr; Task_Init &rArr; Class_Chariot::Init() &rArr; Class_ICM42688::Init(__SPI_HandleTypeDef*) &rArr; Class_ICM42688::calibrateGyro() &rArr; Class_ICM42688::Get_Data() &rArr; Class_ICM42688::Get_Raw_Data() &rArr; Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*) &rArr; Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short) &rArr; SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short) &rArr; HAL_SPI_TransmitReceive &rArr; SPI_WaitOnFlagUntilTimeout
+__rt_entry_main &rArr; main &rArr; Task_Init &rArr; Class_Chariot::Init() &rArr; Class_BMP388::Init(__I2C_HandleTypeDef*) &rArr; Class_BMP388::Read_Calibration() &rArr; Class_BMP388::Read_Register(unsigned char, unsigned char*, unsigned short) &rArr; HAL_I2C_Mem_Read &rArr; I2C_RequestMemoryRead &rArr; I2C_WaitOnFlagUntilTimeout &rArr; I2C_IsErrorOccurred &rArr; I2C_Flush_TXDR
 <P>
 <H3>
 Mutually Recursive functions
@@ -102,7 +102,7 @@ Function Pointers
  <LI><a href="#[34]">TIM3_IRQHandler</a> from startup_stm32h503xx.o(.text) referenced from startup_stm32h503xx.o(RESET)
  <LI><a href="#[35]">TIM6_IRQHandler</a> from startup_stm32h503xx.o(.text) referenced from startup_stm32h503xx.o(RESET)
  <LI><a href="#[36]">TIM7_IRQHandler</a> from startup_stm32h503xx.o(.text) referenced from startup_stm32h503xx.o(RESET)
- <LI><a href="#[5c]">Task10ms_TIM2_Callback</a> from tsk_config_and_callback.o(.text.Task10ms_TIM2_Callback) referenced 2 times from tsk_config_and_callback.o(.text.Task_Init)
+ <LI><a href="#[5c]">Task1ms_TIM2_Callback</a> from tsk_config_and_callback.o(.text.Task1ms_TIM2_Callback) referenced 2 times from tsk_config_and_callback.o(.text.Task_Init)
  <LI><a href="#[3e]">USART1_IRQHandler</a> from startup_stm32h503xx.o(.text) referenced from startup_stm32h503xx.o(RESET)
  <LI><a href="#[3f]">USART2_IRQHandler</a> from startup_stm32h503xx.o(.text) referenced from startup_stm32h503xx.o(RESET)
  <LI><a href="#[40]">USART3_IRQHandler</a> from startup_stm32h503xx.o(.text) referenced from startup_stm32h503xx.o(RESET)
@@ -240,8 +240,8 @@ Global Symbols
 <P><STRONG><a name="[176]"></a>__rt_entry_postsh_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$00000009))
 
 <P><STRONG><a name="[6a]"></a>__rt_entry_main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$0000000D))
-<BR><BR>[Stack]<UL><LI>Max Depth = 416 + Unknown Stack Size
-<LI>Call Chain = __rt_entry_main &rArr; main &rArr; Task_Init &rArr; Class_Chariot::Init() &rArr; Class_ICM42688::Init(__SPI_HandleTypeDef*) &rArr; Class_ICM42688::calibrateGyro() &rArr; Class_ICM42688::Get_Data() &rArr; Class_ICM42688::Get_Raw_Data() &rArr; Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*) &rArr; Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short) &rArr; SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short) &rArr; HAL_SPI_TransmitReceive &rArr; SPI_WaitOnFlagUntilTimeout
+<BR><BR>[Stack]<UL><LI>Max Depth = 404 + Unknown Stack Size
+<LI>Call Chain = __rt_entry_main &rArr; main &rArr; Task_Init &rArr; Class_Chariot::Init() &rArr; Class_BMP388::Init(__I2C_HandleTypeDef*) &rArr; Class_BMP388::Read_Calibration() &rArr; Class_BMP388::Read_Register(unsigned char, unsigned char*, unsigned short) &rArr; HAL_I2C_Mem_Read &rArr; I2C_RequestMemoryRead &rArr; I2C_WaitOnFlagUntilTimeout &rArr; I2C_IsErrorOccurred &rArr; I2C_Flush_TXDR
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;exit
@@ -510,8 +510,8 @@ Global Symbols
 
 <P><STRONG><a name="[179]"></a>_ll_udiv</STRONG> (Thumb, 240 bytes, Stack size 48 bytes, lludivv7m.o(.text), UNUSED)
 
-<P><STRONG><a name="[141]"></a>__aeabi_memcpy</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, rt_memcpy_v6.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*)
+<P><STRONG><a name="[140]"></a>__aeabi_memcpy</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, rt_memcpy_v6.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*)
 </UL>
 
 <P><STRONG><a name="[72]"></a>__rt_memcpy</STRONG> (Thumb, 138 bytes, Stack size 0 bytes, rt_memcpy_v6.o(.text), UNUSED)
@@ -568,8 +568,9 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_errno_addr
 </UL>
 <BR>[Called By]<UL><LI><a href="#[144]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sqrtf
-<LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2f
-<LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asinf
+<LI><a href="#[143]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sqrtf
+<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2f
+<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asinf
 </UL>
 
 <P><STRONG><a name="[183]"></a>__user_libspace</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, libspace.o(.text), UNUSED)
@@ -671,13 +672,12 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
 </UL>
-<BR>[Called By]<UL><LI><a href="#[12b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadMagnetOffset()
-<LI><a href="#[135]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::DoReset()
-<LI><a href="#[134]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::DoSet()
-<LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::Init(__I2C_HandleTypeDef*)
-<LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::calibrateGyro()
-<LI><a href="#[142]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::reset()
-<LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Init(__I2C_HandleTypeDef*)
+<BR>[Called By]<UL><LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadMagnetOffset()
+<LI><a href="#[137]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::DoReset()
+<LI><a href="#[136]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::DoSet()
+<LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::Init(__I2C_HandleTypeDef*)
+<LI><a href="#[12b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Init(__SPI_HandleTypeDef*)
+<LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Init(__I2C_HandleTypeDef*)
 </UL>
 
 <P><STRONG><a name="[87]"></a>HAL_FDCAN_ErrorCallback</STRONG> (Thumb, 8 bytes, Stack size 4 bytes, stm32h5xx_hal_fdcan.o(.text.HAL_FDCAN_ErrorCallback))
@@ -814,7 +814,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = HAL_GPIO_WritePin
 </UL>
 <BR>[Called By]<UL><LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
-<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short)
+<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short)
 </UL>
 
 <P><STRONG><a name="[7c]"></a>HAL_GetTick</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, stm32h5xx_hal.o(.text.HAL_GetTick))
@@ -906,10 +906,10 @@ Global Symbols
 <LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_TransferConfig
 <LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_WaitOnFlagUntilTimeout
 </UL>
-<BR>[Called By]<UL><LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::I2C_ReadBytes(unsigned char, unsigned char*, unsigned char)
-<LI><a href="#[130]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::I2C_ReadReg(unsigned char, unsigned char*)
-<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Read_Register(unsigned char, unsigned char*, unsigned short)
-<LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Init(__I2C_HandleTypeDef*)
+<BR>[Called By]<UL><LI><a href="#[133]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::I2C_ReadBytes(unsigned char, unsigned char*, unsigned char)
+<LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::I2C_ReadReg(unsigned char, unsigned char*)
+<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Read_Register(unsigned char, unsigned char*, unsigned short)
+<LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Init(__I2C_HandleTypeDef*)
 </UL>
 
 <P><STRONG><a name="[9b]"></a>HAL_I2C_Mem_Write</STRONG> (Thumb, 628 bytes, Stack size 40 bytes, stm32h5xx_hal_i2c.o(.text.HAL_I2C_Mem_Write))
@@ -922,8 +922,8 @@ Global Symbols
 <LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_TransferConfig
 <LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_WaitOnFlagUntilTimeout
 </UL>
-<BR>[Called By]<UL><LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::I2C_WriteReg(unsigned char, unsigned char)
-<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Write_Register(unsigned char, unsigned char)
+<BR>[Called By]<UL><LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::I2C_WriteReg(unsigned char, unsigned char)
+<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Write_Register(unsigned char, unsigned char)
 </UL>
 
 <P><STRONG><a name="[95]"></a>HAL_I2C_MspInit</STRONG> (Thumb, 352 bytes, Stack size 200 bytes, i2c.o(.text.HAL_I2C_MspInit))
@@ -1130,7 +1130,7 @@ Global Symbols
 <LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_WaitOnFlagUntilTimeout
 <LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_CloseTransfer
 </UL>
-<BR>[Called By]<UL><LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short)
+<BR>[Called By]<UL><LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short)
 </UL>
 
 <P><STRONG><a name="[a1]"></a>HAL_SYSTICK_CLKSourceConfig</STRONG> (Thumb, 154 bytes, Stack size 8 bytes, stm32h5xx_hal_cortex.o(.text.HAL_SYSTICK_CLKSourceConfig))
@@ -1527,8 +1527,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PWM_ConfigChannel
 </UL>
 
-<P><STRONG><a name="[5c]"></a>Task10ms_TIM2_Callback</STRONG> (Thumb, 58 bytes, Stack size 16 bytes, tsk_config_and_callback.o(.text.Task10ms_TIM2_Callback))
-<BR><BR>[Stack]<UL><LI>Max Depth = 376<LI>Call Chain = Task10ms_TIM2_Callback &rArr; Class_Chariot::TIM_Calculate_PeriodElapsedCallback() &rArr; Class_Chariot::Update_SensorData() &rArr; Class_ICM42688::Get_Data() &rArr; Class_ICM42688::Get_Raw_Data() &rArr; Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*) &rArr; Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short) &rArr; SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short) &rArr; HAL_SPI_TransmitReceive &rArr; SPI_WaitOnFlagUntilTimeout
+<P><STRONG><a name="[5c]"></a>Task1ms_TIM2_Callback</STRONG> (Thumb, 58 bytes, Stack size 16 bytes, tsk_config_and_callback.o(.text.Task1ms_TIM2_Callback))
+<BR><BR>[Stack]<UL><LI>Max Depth = 376<LI>Call Chain = Task1ms_TIM2_Callback &rArr; Class_Chariot::TIM_Calculate_PeriodElapsedCallback() &rArr; Class_Chariot::Update_SensorData() &rArr; Class_ICM42688::Get_Data() &rArr; Class_ICM42688::Get_Raw_Data() &rArr; Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*) &rArr; Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short) &rArr; SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short) &rArr; HAL_SPI_TransmitReceive &rArr; SPI_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::TIM_Communicate_PeriodElapsedCallback()
 <LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::TIM_Calculate_PeriodElapsedCallback()
@@ -1537,7 +1537,7 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> tsk_config_and_callback.o(.text.Task_Init)
 </UL>
 <P><STRONG><a name="[102]"></a>Task_Init</STRONG> (Thumb, 78 bytes, Stack size 16 bytes, tsk_config_and_callback.o(.text.Task_Init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 400<LI>Call Chain = Task_Init &rArr; Class_Chariot::Init() &rArr; Class_ICM42688::Init(__SPI_HandleTypeDef*) &rArr; Class_ICM42688::calibrateGyro() &rArr; Class_ICM42688::Get_Data() &rArr; Class_ICM42688::Get_Raw_Data() &rArr; Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*) &rArr; Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short) &rArr; SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short) &rArr; HAL_SPI_TransmitReceive &rArr; SPI_WaitOnFlagUntilTimeout
+<BR><BR>[Stack]<UL><LI>Max Depth = 388<LI>Call Chain = Task_Init &rArr; Class_Chariot::Init() &rArr; Class_BMP388::Init(__I2C_HandleTypeDef*) &rArr; Class_BMP388::Read_Calibration() &rArr; Class_BMP388::Read_Register(unsigned char, unsigned char*, unsigned short) &rArr; HAL_I2C_Mem_Read &rArr; I2C_RequestMemoryRead &rArr; I2C_WaitOnFlagUntilTimeout &rArr; I2C_IsErrorOccurred &rArr; I2C_Flush_TXDR
 </UL>
 <BR>[Calls]<UL><LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_Start_IT
 <LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::Init()
@@ -1580,14 +1580,26 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DWT_GetCurrentTimeUs()
 </UL>
 
-<P><STRONG><a name="[10c]"></a>MahonyAHRSupdateIMU(float, float, float, float, float, float)</STRONG> (Thumb, 1412 bytes, Stack size 96 bytes, mahony.o(.text._Z19MahonyAHRSupdateIMUffffff))
-<BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = MahonyAHRSupdateIMU(float, float, float, float, float, float) &rArr; __hardfp_atan2f &rArr; __set_errno
+<P><STRONG><a name="[10c]"></a>MahonyAHRSupdate(float, float, float, float, float, float, float, float, float)</STRONG> (Thumb, 2324 bytes, Stack size 184 bytes, mahony.o(.text._Z16MahonyAHRSupdatefffffffff))
+<BR><BR>[Stack]<UL><LI>Max Depth = 320<LI>Call Chain = MahonyAHRSupdate(float, float, float, float, float, float, float, float, float) &rArr; MahonyAHRSupdateIMU(float, float, float, float, float, float) &rArr; __hardfp_atan2f &rArr; __set_errno
 </UL>
-<BR>[Calls]<UL><LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;invSqrt(float)
-<LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2f
-<LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asinf
+<BR>[Calls]<UL><LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;std::__2::__math::sqrt[abi:nn200000](float)
+<LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MahonyAHRSupdateIMU(float, float, float, float, float, float)
+<LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;invSqrt(float)
+<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2f
+<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asinf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::TIM_Calculate_PeriodElapsedCallback()
+</UL>
+
+<P><STRONG><a name="[10d]"></a>MahonyAHRSupdateIMU(float, float, float, float, float, float)</STRONG> (Thumb, 1412 bytes, Stack size 96 bytes, mahony.o(.text._Z19MahonyAHRSupdateIMUffffff))
+<BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = MahonyAHRSupdateIMU(float, float, float, float, float, float) &rArr; __hardfp_atan2f &rArr; __set_errno
+</UL>
+<BR>[Calls]<UL><LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;invSqrt(float)
+<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2f
+<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asinf
+</UL>
+<BR>[Called By]<UL><LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MahonyAHRSupdate(float, float, float, float, float, float, float, float, float)
 </UL>
 
 <P><STRONG><a name="[ff]"></a>DWT_GetCurrentTimeUs()</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, dvc_dwt.o(.text._Z20DWT_GetCurrentTimeUsv))
@@ -1595,9 +1607,9 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DWT_Update()
 </UL>
-<BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Task10ms_TIM2_Callback
-<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadTemperature()
-<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadMagnet()
+<BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Task1ms_TIM2_Callback
+<LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadTemperature()
+<LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadMagnet()
 </UL>
 
 <P><STRONG><a name="[103]"></a>DWT_Init()</STRONG> (Thumb, 70 bytes, Stack size 0 bytes, dvc_dwt.o(.text._Z8DWT_Initv))
@@ -1616,461 +1628,428 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Task_Init
 </UL>
 
-<P><STRONG><a name="[111]"></a>Class_BMP388::Read_Register(unsigned char, unsigned char*, unsigned short)</STRONG> (Thumb, 58 bytes, Stack size 40 bytes, dvc_bmp388.o(.text._ZN12Class_BMP38813Read_RegisterEhPht))
+<P><STRONG><a name="[113]"></a>Class_BMP388::Read_Register(unsigned char, unsigned char*, unsigned short)</STRONG> (Thumb, 58 bytes, Stack size 40 bytes, dvc_bmp388.o(.text._ZN12Class_BMP38813Read_RegisterEhPht))
 <BR><BR>[Stack]<UL><LI>Max Depth = 196<LI>Call Chain = Class_BMP388::Read_Register(unsigned char, unsigned char*, unsigned short) &rArr; HAL_I2C_Mem_Read &rArr; I2C_RequestMemoryRead &rArr; I2C_WaitOnFlagUntilTimeout &rArr; I2C_IsErrorOccurred &rArr; I2C_Flush_TXDR
 </UL>
 <BR>[Calls]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_I2C_Mem_Read
 </UL>
-<BR>[Called By]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::TIM_Calculate_PeriodElapsedCallback()
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Read_Calibration()
+<BR>[Called By]<UL><LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::TIM_Calculate_PeriodElapsedCallback()
+<LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Read_Calibration()
 </UL>
 
-<P><STRONG><a name="[112]"></a>Class_BMP388::Write_Register(unsigned char, unsigned char)</STRONG> (Thumb, 54 bytes, Stack size 32 bytes, dvc_bmp388.o(.text._ZN12Class_BMP38814Write_RegisterEhh))
+<P><STRONG><a name="[114]"></a>Class_BMP388::Write_Register(unsigned char, unsigned char)</STRONG> (Thumb, 54 bytes, Stack size 32 bytes, dvc_bmp388.o(.text._ZN12Class_BMP38814Write_RegisterEhh))
 <BR><BR>[Stack]<UL><LI>Max Depth = 188<LI>Call Chain = Class_BMP388::Write_Register(unsigned char, unsigned char) &rArr; HAL_I2C_Mem_Write &rArr; I2C_RequestMemoryWrite &rArr; I2C_WaitOnFlagUntilTimeout &rArr; I2C_IsErrorOccurred &rArr; I2C_Flush_TXDR
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_I2C_Mem_Write
 </UL>
-<BR>[Called By]<UL><LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Init(__I2C_HandleTypeDef*)
+<BR>[Called By]<UL><LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Init(__I2C_HandleTypeDef*)
 </UL>
 
-<P><STRONG><a name="[113]"></a>Class_BMP388::Read_Calibration()</STRONG> (Thumb, 736 bytes, Stack size 112 bytes, dvc_bmp388.o(.text._ZN12Class_BMP38816Read_CalibrationEv))
+<P><STRONG><a name="[115]"></a>Class_BMP388::Read_Calibration()</STRONG> (Thumb, 736 bytes, Stack size 112 bytes, dvc_bmp388.o(.text._ZN12Class_BMP38816Read_CalibrationEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 308<LI>Call Chain = Class_BMP388::Read_Calibration() &rArr; Class_BMP388::Read_Register(unsigned char, unsigned char*, unsigned short) &rArr; HAL_I2C_Mem_Read &rArr; I2C_RequestMemoryRead &rArr; I2C_WaitOnFlagUntilTimeout &rArr; I2C_IsErrorOccurred &rArr; I2C_Flush_TXDR
 </UL>
-<BR>[Calls]<UL><LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Read_Register(unsigned char, unsigned char*, unsigned short)
-<LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
-<LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
+<BR>[Calls]<UL><LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Read_Register(unsigned char, unsigned char*, unsigned short)
+<LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
+<LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
+<LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
 </UL>
-<BR>[Called By]<UL><LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Init(__I2C_HandleTypeDef*)
+<BR>[Called By]<UL><LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Init(__I2C_HandleTypeDef*)
 </UL>
 
-<P><STRONG><a name="[117]"></a>Class_BMP388::Compensate_Pressure()</STRONG> (Thumb, 894 bytes, Stack size 224 bytes, dvc_bmp388.o(.text._ZN12Class_BMP38819Compensate_PressureEv))
+<P><STRONG><a name="[119]"></a>Class_BMP388::Compensate_Pressure()</STRONG> (Thumb, 894 bytes, Stack size 224 bytes, dvc_bmp388.o(.text._ZN12Class_BMP38819Compensate_PressureEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 256<LI>Call Chain = Class_BMP388::Compensate_Pressure() &rArr; __aeabi_dmul
 </UL>
-<BR>[Calls]<UL><LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
-<LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-<LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
-<LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
-<LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
+<BR>[Calls]<UL><LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
+<LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
+<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
+<LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
+<LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 </UL>
-<BR>[Called By]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::TIM_Calculate_PeriodElapsedCallback()
+<BR>[Called By]<UL><LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::TIM_Calculate_PeriodElapsedCallback()
 </UL>
 
-<P><STRONG><a name="[11c]"></a>Class_BMP388::Compensate_Temperature()</STRONG> (Thumb, 188 bytes, Stack size 64 bytes, dvc_bmp388.o(.text._ZN12Class_BMP38822Compensate_TemperatureEv))
+<P><STRONG><a name="[11e]"></a>Class_BMP388::Compensate_Temperature()</STRONG> (Thumb, 188 bytes, Stack size 64 bytes, dvc_bmp388.o(.text._ZN12Class_BMP38822Compensate_TemperatureEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = Class_BMP388::Compensate_Temperature() &rArr; __aeabi_dmul
 </UL>
-<BR>[Calls]<UL><LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-<LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
-<LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
-<LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
-<LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
+<BR>[Calls]<UL><LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
+<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
+<LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
+<LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
+<LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 </UL>
-<BR>[Called By]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::TIM_Calculate_PeriodElapsedCallback()
+<BR>[Called By]<UL><LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::TIM_Calculate_PeriodElapsedCallback()
 </UL>
 
-<P><STRONG><a name="[11d]"></a>Class_BMP388::TIM_Calculate_PeriodElapsedCallback()</STRONG> (Thumb, 90 bytes, Stack size 24 bytes, dvc_bmp388.o(.text._ZN12Class_BMP38835TIM_Calculate_PeriodElapsedCallbackEv))
+<P><STRONG><a name="[11f]"></a>Class_BMP388::TIM_Calculate_PeriodElapsedCallback()</STRONG> (Thumb, 90 bytes, Stack size 24 bytes, dvc_bmp388.o(.text._ZN12Class_BMP38835TIM_Calculate_PeriodElapsedCallbackEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 280<LI>Call Chain = Class_BMP388::TIM_Calculate_PeriodElapsedCallback() &rArr; Class_BMP388::Compensate_Pressure() &rArr; __aeabi_dmul
 </UL>
-<BR>[Calls]<UL><LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Compensate_Pressure()
-<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Compensate_Temperature()
-<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Read_Register(unsigned char, unsigned char*, unsigned short)
+<BR>[Calls]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Compensate_Pressure()
+<LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Compensate_Temperature()
+<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Read_Register(unsigned char, unsigned char*, unsigned short)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::Update_SensorData()
+<BR>[Called By]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::Update_SensorData()
 </UL>
 
-<P><STRONG><a name="[11e]"></a>Class_BMP388::Init(__I2C_HandleTypeDef*)</STRONG> (Thumb, 132 bytes, Stack size 40 bytes, dvc_bmp388.o(.text._ZN12Class_BMP3884InitEP19__I2C_HandleTypeDef))
+<P><STRONG><a name="[120]"></a>Class_BMP388::Init(__I2C_HandleTypeDef*)</STRONG> (Thumb, 132 bytes, Stack size 40 bytes, dvc_bmp388.o(.text._ZN12Class_BMP3884InitEP19__I2C_HandleTypeDef))
 <BR><BR>[Stack]<UL><LI>Max Depth = 348<LI>Call Chain = Class_BMP388::Init(__I2C_HandleTypeDef*) &rArr; Class_BMP388::Read_Calibration() &rArr; Class_BMP388::Read_Register(unsigned char, unsigned char*, unsigned short) &rArr; HAL_I2C_Mem_Read &rArr; I2C_RequestMemoryRead &rArr; I2C_WaitOnFlagUntilTimeout &rArr; I2C_IsErrorOccurred &rArr; I2C_Flush_TXDR
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 <LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_I2C_Mem_Read
-<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Write_Register(unsigned char, unsigned char)
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Read_Calibration()
+<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Write_Register(unsigned char, unsigned char)
+<LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Read_Calibration()
 </UL>
 <BR>[Called By]<UL><LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::Init()
 </UL>
 
-<P><STRONG><a name="[11f]"></a>Class_Chariot::Update_SensorData()</STRONG> (Thumb, 44 bytes, Stack size 24 bytes, ita_chariot.o(.text._ZN13Class_Chariot17Update_SensorDataEv))
+<P><STRONG><a name="[121]"></a>Class_Chariot::Update_SensorData()</STRONG> (Thumb, 44 bytes, Stack size 24 bytes, ita_chariot.o(.text._ZN13Class_Chariot17Update_SensorDataEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 320<LI>Call Chain = Class_Chariot::Update_SensorData() &rArr; Class_ICM42688::Get_Data() &rArr; Class_ICM42688::Get_Raw_Data() &rArr; Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*) &rArr; Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short) &rArr; SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short) &rArr; HAL_SPI_TransmitReceive &rArr; SPI_WaitOnFlagUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadTemperature()
-<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadMagnet()
-<LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Get_Data()
-<LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::TIM_Calculate_PeriodElapsedCallback()
+<BR>[Calls]<UL><LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadTemperature()
+<LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadMagnet()
+<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Get_Data()
+<LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::TIM_Calculate_PeriodElapsedCallback()
 </UL>
 <BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::TIM_Calculate_PeriodElapsedCallback()
 </UL>
 
-<P><STRONG><a name="[100]"></a>Class_Chariot::TIM_Calculate_PeriodElapsedCallback()</STRONG> (Thumb, 106 bytes, Stack size 40 bytes, ita_chariot.o(.text._ZN13Class_Chariot35TIM_Calculate_PeriodElapsedCallbackEv))
+<P><STRONG><a name="[100]"></a>Class_Chariot::TIM_Calculate_PeriodElapsedCallback()</STRONG> (Thumb, 144 bytes, Stack size 40 bytes, ita_chariot.o(.text._ZN13Class_Chariot35TIM_Calculate_PeriodElapsedCallbackEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 360<LI>Call Chain = Class_Chariot::TIM_Calculate_PeriodElapsedCallback() &rArr; Class_Chariot::Update_SensorData() &rArr; Class_ICM42688::Get_Data() &rArr; Class_ICM42688::Get_Raw_Data() &rArr; Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*) &rArr; Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short) &rArr; SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short) &rArr; HAL_SPI_TransmitReceive &rArr; SPI_WaitOnFlagUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::Update_SensorData()
-<LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MahonyAHRSupdateIMU(float, float, float, float, float, float)
-<LI><a href="#[128]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Get_AccZ() const
-<LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Get_AccY() const
-<LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Get_AccX() const
-<LI><a href="#[125]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Get_GyrZ() const
-<LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Get_GyrY() const
-<LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Get_GyrX() const
+<BR>[Calls]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::Update_SensorData()
+<LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MahonyAHRSupdate(float, float, float, float, float, float, float, float, float)
+<LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Get_AccZ() const
+<LI><a href="#[129]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Get_AccY() const
+<LI><a href="#[128]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Get_AccX() const
+<LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Get_GyrZ() const
+<LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Get_GyrY() const
+<LI><a href="#[125]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Get_GyrX() const
 </UL>
-<BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Task10ms_TIM2_Callback
+<BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Task1ms_TIM2_Callback
 </UL>
 
 <P><STRONG><a name="[101]"></a>Class_Chariot::TIM_Communicate_PeriodElapsedCallback()</STRONG> (Thumb, 8 bytes, Stack size 4 bytes, ita_chariot.o(.text._ZN13Class_Chariot37TIM_Communicate_PeriodElapsedCallbackEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = Class_Chariot::TIM_Communicate_PeriodElapsedCallback()
 </UL>
-<BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Task10ms_TIM2_Callback
+<BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Task1ms_TIM2_Callback
 </UL>
 
 <P><STRONG><a name="[106]"></a>Class_Chariot::Init()</STRONG> (Thumb, 68 bytes, Stack size 24 bytes, ita_chariot.o(.text._ZN13Class_Chariot4InitEv))
-<BR><BR>[Stack]<UL><LI>Max Depth = 384<LI>Call Chain = Class_Chariot::Init() &rArr; Class_ICM42688::Init(__SPI_HandleTypeDef*) &rArr; Class_ICM42688::calibrateGyro() &rArr; Class_ICM42688::Get_Data() &rArr; Class_ICM42688::Get_Raw_Data() &rArr; Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*) &rArr; Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short) &rArr; SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short) &rArr; HAL_SPI_TransmitReceive &rArr; SPI_WaitOnFlagUntilTimeout
+<BR><BR>[Stack]<UL><LI>Max Depth = 372<LI>Call Chain = Class_Chariot::Init() &rArr; Class_BMP388::Init(__I2C_HandleTypeDef*) &rArr; Class_BMP388::Read_Calibration() &rArr; Class_BMP388::Read_Register(unsigned char, unsigned char*, unsigned short) &rArr; HAL_I2C_Mem_Read &rArr; I2C_RequestMemoryRead &rArr; I2C_WaitOnFlagUntilTimeout &rArr; I2C_IsErrorOccurred &rArr; I2C_Flush_TXDR
 </UL>
-<BR>[Calls]<UL><LI><a href="#[12b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadMagnetOffset()
-<LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::Init(__I2C_HandleTypeDef*)
-<LI><a href="#[129]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Init(__SPI_HandleTypeDef*)
-<LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Init(__I2C_HandleTypeDef*)
+<BR>[Calls]<UL><LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadMagnetOffset()
+<LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::Init(__I2C_HandleTypeDef*)
+<LI><a href="#[12b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Init(__SPI_HandleTypeDef*)
+<LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Init(__I2C_HandleTypeDef*)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Task_Init
 </UL>
 
-<P><STRONG><a name="[12c]"></a>Class_Chariot::Class_Chariot__sub_object()</STRONG> (Thumb, 58 bytes, Stack size 16 bytes, tsk_config_and_callback.o(.text._ZN13Class_ChariotC2Ev))
+<P><STRONG><a name="[12e]"></a>Class_Chariot::Class_Chariot__sub_object()</STRONG> (Thumb, 58 bytes, Stack size 16 bytes, tsk_config_and_callback.o(.text._ZN13Class_ChariotC2Ev))
 <BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = Class_Chariot::Class_Chariot__sub_object() &rArr; Class_ICM42688::Class_ICM42688__sub_object()
 </UL>
-<BR>[Calls]<UL><LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::Class_MMC5983__sub_object()
-<LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Class_ICM42688__sub_object()
+<BR>[Calls]<UL><LI><a href="#[130]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::Class_MMC5983__sub_object()
+<LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Class_ICM42688__sub_object()
 </UL>
 <BR>[Called By]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__cxx_global_var_init
 </UL>
 
-<P><STRONG><a name="[121]"></a>Class_MMC5983::ReadMagnet()</STRONG> (Thumb, 320 bytes, Stack size 48 bytes, dvc_mmc5983.o(.text._ZN13Class_MMC598310ReadMagnetEv))
+<P><STRONG><a name="[123]"></a>Class_MMC5983::ReadMagnet()</STRONG> (Thumb, 320 bytes, Stack size 48 bytes, dvc_mmc5983.o(.text._ZN13Class_MMC598310ReadMagnetEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 244<LI>Call Chain = Class_MMC5983::ReadMagnet() &rArr; Class_MMC5983::I2C_ReadBytes(unsigned char, unsigned char*, unsigned char) &rArr; HAL_I2C_Mem_Read &rArr; I2C_RequestMemoryRead &rArr; I2C_WaitOnFlagUntilTimeout &rArr; I2C_IsErrorOccurred &rArr; I2C_Flush_TXDR
 </UL>
-<BR>[Calls]<UL><LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::I2C_ReadBytes(unsigned char, unsigned char*, unsigned char)
-<LI><a href="#[130]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::I2C_ReadReg(unsigned char, unsigned char*)
-<LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::I2C_WriteReg(unsigned char, unsigned char)
+<BR>[Calls]<UL><LI><a href="#[133]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::I2C_ReadBytes(unsigned char, unsigned char*, unsigned char)
+<LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::I2C_ReadReg(unsigned char, unsigned char*)
+<LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::I2C_WriteReg(unsigned char, unsigned char)
 <LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DWT_GetCurrentTimeUs()
 </UL>
-<BR>[Called By]<UL><LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::Update_SensorData()
-<LI><a href="#[12b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadMagnetOffset()
+<BR>[Called By]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::Update_SensorData()
+<LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadMagnetOffset()
 </UL>
 
-<P><STRONG><a name="[130]"></a>Class_MMC5983::I2C_ReadReg(unsigned char, unsigned char*)</STRONG> (Thumb, 52 bytes, Stack size 32 bytes, dvc_mmc5983.o(.text._ZN13Class_MMC598311I2C_ReadRegEhPh))
+<P><STRONG><a name="[132]"></a>Class_MMC5983::I2C_ReadReg(unsigned char, unsigned char*)</STRONG> (Thumb, 52 bytes, Stack size 32 bytes, dvc_mmc5983.o(.text._ZN13Class_MMC598311I2C_ReadRegEhPh))
 <BR><BR>[Stack]<UL><LI>Max Depth = 188<LI>Call Chain = Class_MMC5983::I2C_ReadReg(unsigned char, unsigned char*) &rArr; HAL_I2C_Mem_Read &rArr; I2C_RequestMemoryRead &rArr; I2C_WaitOnFlagUntilTimeout &rArr; I2C_IsErrorOccurred &rArr; I2C_Flush_TXDR
 </UL>
 <BR>[Calls]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_I2C_Mem_Read
 </UL>
-<BR>[Called By]<UL><LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadTemperature()
-<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadMagnet()
-<LI><a href="#[133]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadProductID(unsigned char*)
+<BR>[Called By]<UL><LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadTemperature()
+<LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadMagnet()
+<LI><a href="#[135]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadProductID(unsigned char*)
 </UL>
 
-<P><STRONG><a name="[12f]"></a>Class_MMC5983::I2C_WriteReg(unsigned char, unsigned char)</STRONG> (Thumb, 56 bytes, Stack size 32 bytes, dvc_mmc5983.o(.text._ZN13Class_MMC598312I2C_WriteRegEhh))
+<P><STRONG><a name="[131]"></a>Class_MMC5983::I2C_WriteReg(unsigned char, unsigned char)</STRONG> (Thumb, 56 bytes, Stack size 32 bytes, dvc_mmc5983.o(.text._ZN13Class_MMC598312I2C_WriteRegEhh))
 <BR><BR>[Stack]<UL><LI>Max Depth = 188<LI>Call Chain = Class_MMC5983::I2C_WriteReg(unsigned char, unsigned char) &rArr; HAL_I2C_Mem_Write &rArr; I2C_RequestMemoryWrite &rArr; I2C_WaitOnFlagUntilTimeout &rArr; I2C_IsErrorOccurred &rArr; I2C_Flush_TXDR
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_I2C_Mem_Write
 </UL>
-<BR>[Called By]<UL><LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadTemperature()
-<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadMagnet()
-<LI><a href="#[135]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::DoReset()
-<LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::SetBandwidth(unsigned char)
-<LI><a href="#[134]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::DoSet()
+<BR>[Called By]<UL><LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadTemperature()
+<LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadMagnet()
+<LI><a href="#[137]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::DoReset()
+<LI><a href="#[134]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::SetBandwidth(unsigned char)
+<LI><a href="#[136]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::DoSet()
 </UL>
 
-<P><STRONG><a name="[132]"></a>Class_MMC5983::SetBandwidth(unsigned char)</STRONG> (Thumb, 110 bytes, Stack size 24 bytes, dvc_mmc5983.o(.text._ZN13Class_MMC598312SetBandwidthEh))
+<P><STRONG><a name="[134]"></a>Class_MMC5983::SetBandwidth(unsigned char)</STRONG> (Thumb, 110 bytes, Stack size 24 bytes, dvc_mmc5983.o(.text._ZN13Class_MMC598312SetBandwidthEh))
 <BR><BR>[Stack]<UL><LI>Max Depth = 212<LI>Call Chain = Class_MMC5983::SetBandwidth(unsigned char) &rArr; Class_MMC5983::I2C_WriteReg(unsigned char, unsigned char) &rArr; HAL_I2C_Mem_Write &rArr; I2C_RequestMemoryWrite &rArr; I2C_WaitOnFlagUntilTimeout &rArr; I2C_IsErrorOccurred &rArr; I2C_Flush_TXDR
 </UL>
-<BR>[Calls]<UL><LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::I2C_WriteReg(unsigned char, unsigned char)
+<BR>[Calls]<UL><LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::I2C_WriteReg(unsigned char, unsigned char)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::Init(__I2C_HandleTypeDef*)
+<BR>[Called By]<UL><LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::Init(__I2C_HandleTypeDef*)
 </UL>
 
-<P><STRONG><a name="[131]"></a>Class_MMC5983::I2C_ReadBytes(unsigned char, unsigned char*, unsigned char)</STRONG> (Thumb, 58 bytes, Stack size 40 bytes, dvc_mmc5983.o(.text._ZN13Class_MMC598313I2C_ReadBytesEhPhh))
+<P><STRONG><a name="[133]"></a>Class_MMC5983::I2C_ReadBytes(unsigned char, unsigned char*, unsigned char)</STRONG> (Thumb, 58 bytes, Stack size 40 bytes, dvc_mmc5983.o(.text._ZN13Class_MMC598313I2C_ReadBytesEhPhh))
 <BR><BR>[Stack]<UL><LI>Max Depth = 196<LI>Call Chain = Class_MMC5983::I2C_ReadBytes(unsigned char, unsigned char*, unsigned char) &rArr; HAL_I2C_Mem_Read &rArr; I2C_RequestMemoryRead &rArr; I2C_WaitOnFlagUntilTimeout &rArr; I2C_IsErrorOccurred &rArr; I2C_Flush_TXDR
 </UL>
 <BR>[Calls]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_I2C_Mem_Read
 </UL>
-<BR>[Called By]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadMagnet()
+<BR>[Called By]<UL><LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadMagnet()
 </UL>
 
-<P><STRONG><a name="[133]"></a>Class_MMC5983::ReadProductID(unsigned char*)</STRONG> (Thumb, 64 bytes, Stack size 24 bytes, dvc_mmc5983.o(.text._ZN13Class_MMC598313ReadProductIDEPh))
+<P><STRONG><a name="[135]"></a>Class_MMC5983::ReadProductID(unsigned char*)</STRONG> (Thumb, 64 bytes, Stack size 24 bytes, dvc_mmc5983.o(.text._ZN13Class_MMC598313ReadProductIDEPh))
 <BR><BR>[Stack]<UL><LI>Max Depth = 212<LI>Call Chain = Class_MMC5983::ReadProductID(unsigned char*) &rArr; Class_MMC5983::I2C_ReadReg(unsigned char, unsigned char*) &rArr; HAL_I2C_Mem_Read &rArr; I2C_RequestMemoryRead &rArr; I2C_WaitOnFlagUntilTimeout &rArr; I2C_IsErrorOccurred &rArr; I2C_Flush_TXDR
 </UL>
-<BR>[Calls]<UL><LI><a href="#[130]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::I2C_ReadReg(unsigned char, unsigned char*)
+<BR>[Calls]<UL><LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::I2C_ReadReg(unsigned char, unsigned char*)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::Init(__I2C_HandleTypeDef*)
+<BR>[Called By]<UL><LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::Init(__I2C_HandleTypeDef*)
 </UL>
 
-<P><STRONG><a name="[122]"></a>Class_MMC5983::ReadTemperature()</STRONG> (Thumb, 188 bytes, Stack size 32 bytes, dvc_mmc5983.o(.text._ZN13Class_MMC598315ReadTemperatureEv))
+<P><STRONG><a name="[124]"></a>Class_MMC5983::ReadTemperature()</STRONG> (Thumb, 188 bytes, Stack size 32 bytes, dvc_mmc5983.o(.text._ZN13Class_MMC598315ReadTemperatureEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 220<LI>Call Chain = Class_MMC5983::ReadTemperature() &rArr; Class_MMC5983::I2C_ReadReg(unsigned char, unsigned char*) &rArr; HAL_I2C_Mem_Read &rArr; I2C_RequestMemoryRead &rArr; I2C_WaitOnFlagUntilTimeout &rArr; I2C_IsErrorOccurred &rArr; I2C_Flush_TXDR
 </UL>
-<BR>[Calls]<UL><LI><a href="#[130]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::I2C_ReadReg(unsigned char, unsigned char*)
-<LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::I2C_WriteReg(unsigned char, unsigned char)
+<BR>[Calls]<UL><LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::I2C_ReadReg(unsigned char, unsigned char*)
+<LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::I2C_WriteReg(unsigned char, unsigned char)
 <LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DWT_GetCurrentTimeUs()
 </UL>
-<BR>[Called By]<UL><LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::Update_SensorData()
+<BR>[Called By]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::Update_SensorData()
 </UL>
 
-<P><STRONG><a name="[12b]"></a>Class_MMC5983::ReadMagnetOffset()</STRONG> (Thumb, 360 bytes, Stack size 80 bytes, dvc_mmc5983.o(.text._ZN13Class_MMC598316ReadMagnetOffsetEv))
+<P><STRONG><a name="[12d]"></a>Class_MMC5983::ReadMagnetOffset()</STRONG> (Thumb, 360 bytes, Stack size 80 bytes, dvc_mmc5983.o(.text._ZN13Class_MMC598316ReadMagnetOffsetEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 324<LI>Call Chain = Class_MMC5983::ReadMagnetOffset() &rArr; Class_MMC5983::ReadMagnet() &rArr; Class_MMC5983::I2C_ReadBytes(unsigned char, unsigned char*, unsigned char) &rArr; HAL_I2C_Mem_Read &rArr; I2C_RequestMemoryRead &rArr; I2C_WaitOnFlagUntilTimeout &rArr; I2C_IsErrorOccurred &rArr; I2C_Flush_TXDR
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadMagnet()
-<LI><a href="#[135]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::DoReset()
-<LI><a href="#[134]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::DoSet()
+<LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadMagnet()
+<LI><a href="#[137]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::DoReset()
+<LI><a href="#[136]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::DoSet()
 </UL>
 <BR>[Called By]<UL><LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::Init()
 </UL>
 
-<P><STRONG><a name="[12a]"></a>Class_MMC5983::Init(__I2C_HandleTypeDef*)</STRONG> (Thumb, 136 bytes, Stack size 32 bytes, dvc_mmc5983.o(.text._ZN13Class_MMC59834InitEP19__I2C_HandleTypeDef))
+<P><STRONG><a name="[12c]"></a>Class_MMC5983::Init(__I2C_HandleTypeDef*)</STRONG> (Thumb, 136 bytes, Stack size 32 bytes, dvc_mmc5983.o(.text._ZN13Class_MMC59834InitEP19__I2C_HandleTypeDef))
 <BR><BR>[Stack]<UL><LI>Max Depth = 244<LI>Call Chain = Class_MMC5983::Init(__I2C_HandleTypeDef*) &rArr; Class_MMC5983::SetBandwidth(unsigned char) &rArr; Class_MMC5983::I2C_WriteReg(unsigned char, unsigned char) &rArr; HAL_I2C_Mem_Write &rArr; I2C_RequestMemoryWrite &rArr; I2C_WaitOnFlagUntilTimeout &rArr; I2C_IsErrorOccurred &rArr; I2C_Flush_TXDR
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::SetBandwidth(unsigned char)
-<LI><a href="#[134]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::DoSet()
-<LI><a href="#[133]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadProductID(unsigned char*)
+<LI><a href="#[134]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::SetBandwidth(unsigned char)
+<LI><a href="#[136]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::DoSet()
+<LI><a href="#[135]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadProductID(unsigned char*)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::Init()
 </UL>
 
-<P><STRONG><a name="[134]"></a>Class_MMC5983::DoSet()</STRONG> (Thumb, 58 bytes, Stack size 24 bytes, dvc_mmc5983.o(.text._ZN13Class_MMC59835DoSetEv))
+<P><STRONG><a name="[136]"></a>Class_MMC5983::DoSet()</STRONG> (Thumb, 58 bytes, Stack size 24 bytes, dvc_mmc5983.o(.text._ZN13Class_MMC59835DoSetEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 212<LI>Call Chain = Class_MMC5983::DoSet() &rArr; Class_MMC5983::I2C_WriteReg(unsigned char, unsigned char) &rArr; HAL_I2C_Mem_Write &rArr; I2C_RequestMemoryWrite &rArr; I2C_WaitOnFlagUntilTimeout &rArr; I2C_IsErrorOccurred &rArr; I2C_Flush_TXDR
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::I2C_WriteReg(unsigned char, unsigned char)
+<LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::I2C_WriteReg(unsigned char, unsigned char)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[12b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadMagnetOffset()
-<LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::Init(__I2C_HandleTypeDef*)
+<BR>[Called By]<UL><LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadMagnetOffset()
+<LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::Init(__I2C_HandleTypeDef*)
 </UL>
 
-<P><STRONG><a name="[135]"></a>Class_MMC5983::DoReset()</STRONG> (Thumb, 58 bytes, Stack size 24 bytes, dvc_mmc5983.o(.text._ZN13Class_MMC59837DoResetEv))
+<P><STRONG><a name="[137]"></a>Class_MMC5983::DoReset()</STRONG> (Thumb, 58 bytes, Stack size 24 bytes, dvc_mmc5983.o(.text._ZN13Class_MMC59837DoResetEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 212<LI>Call Chain = Class_MMC5983::DoReset() &rArr; Class_MMC5983::I2C_WriteReg(unsigned char, unsigned char) &rArr; HAL_I2C_Mem_Write &rArr; I2C_RequestMemoryWrite &rArr; I2C_WaitOnFlagUntilTimeout &rArr; I2C_IsErrorOccurred &rArr; I2C_Flush_TXDR
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::I2C_WriteReg(unsigned char, unsigned char)
+<LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::I2C_WriteReg(unsigned char, unsigned char)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[12b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadMagnetOffset()
+<BR>[Called By]<UL><LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_MMC5983::ReadMagnetOffset()
 </UL>
 
-<P><STRONG><a name="[12e]"></a>Class_MMC5983::Class_MMC5983__sub_object()</STRONG> (Thumb, 18 bytes, Stack size 4 bytes, tsk_config_and_callback.o(.text._ZN13Class_MMC5983C2Ev))
+<P><STRONG><a name="[130]"></a>Class_MMC5983::Class_MMC5983__sub_object()</STRONG> (Thumb, 18 bytes, Stack size 4 bytes, tsk_config_and_callback.o(.text._ZN13Class_MMC5983C2Ev))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = Class_MMC5983::Class_MMC5983__sub_object()
 </UL>
-<BR>[Called By]<UL><LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::Class_Chariot__sub_object()
+<BR>[Called By]<UL><LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::Class_Chariot__sub_object()
 </UL>
 
-<P><STRONG><a name="[136]"></a>Class_ICM42688::setAccelFS(Class_ICM42688::AccelFS)</STRONG> (Thumb, 152 bytes, Stack size 24 bytes, dvc_icm42688.o(.text._ZN14Class_ICM4268810setAccelFSENS_7AccelFSE))
+<P><STRONG><a name="[138]"></a>Class_ICM42688::setAccelFS(Class_ICM42688::AccelFS)</STRONG> (Thumb, 152 bytes, Stack size 24 bytes, dvc_icm42688.o(.text._ZN14Class_ICM4268810setAccelFSENS_7AccelFSE))
 <BR><BR>[Stack]<UL><LI>Max Depth = 256<LI>Call Chain = Class_ICM42688::setAccelFS(Class_ICM42688::AccelFS) &rArr; Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*) &rArr; Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short) &rArr; SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short) &rArr; HAL_SPI_TransmitReceive &rArr; SPI_WaitOnFlagUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*)
-<LI><a href="#[137]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setBank(unsigned char)
-<LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::writeRegister(unsigned char, unsigned char)
+<BR>[Calls]<UL><LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*)
+<LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setBank(unsigned char)
+<LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::writeRegister(unsigned char, unsigned char)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[129]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Init(__SPI_HandleTypeDef*)
-</UL>
-
-<P><STRONG><a name="[13a]"></a>Class_ICM42688::setFilters(bool, bool)</STRONG> (Thumb, 252 bytes, Stack size 24 bytes, dvc_icm42688.o(.text._ZN14Class_ICM4268810setFiltersEbb))
-<BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = Class_ICM42688::setFilters(bool, bool) &rArr; Class_ICM42688::setBank(unsigned char) &rArr; Class_ICM42688::writeRegister(unsigned char, unsigned char) &rArr; Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short) &rArr; SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short) &rArr; HAL_SPI_TransmitReceive &rArr; SPI_WaitOnFlagUntilTimeout
-</UL>
-<BR>[Calls]<UL><LI><a href="#[137]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setBank(unsigned char)
-<LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::writeRegister(unsigned char, unsigned char)
-</UL>
-<BR>[Called By]<UL><LI><a href="#[129]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Init(__SPI_HandleTypeDef*)
+<BR>[Called By]<UL><LI><a href="#[12b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Init(__SPI_HandleTypeDef*)
 </UL>
 
-<P><STRONG><a name="[13b]"></a>Class_ICM42688::setGyroODR(Class_ICM42688::ODR)</STRONG> (Thumb, 108 bytes, Stack size 24 bytes, dvc_icm42688.o(.text._ZN14Class_ICM4268810setGyroODRENS_3ODRE))
+<P><STRONG><a name="[13c]"></a>Class_ICM42688::setGyroODR(Class_ICM42688::ODR)</STRONG> (Thumb, 108 bytes, Stack size 24 bytes, dvc_icm42688.o(.text._ZN14Class_ICM4268810setGyroODRENS_3ODRE))
 <BR><BR>[Stack]<UL><LI>Max Depth = 256<LI>Call Chain = Class_ICM42688::setGyroODR(Class_ICM42688::ODR) &rArr; Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*) &rArr; Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short) &rArr; SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short) &rArr; HAL_SPI_TransmitReceive &rArr; SPI_WaitOnFlagUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*)
-<LI><a href="#[137]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setBank(unsigned char)
-<LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::writeRegister(unsigned char, unsigned char)
+<BR>[Calls]<UL><LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*)
+<LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setBank(unsigned char)
+<LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::writeRegister(unsigned char, unsigned char)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[129]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Init(__SPI_HandleTypeDef*)
+<BR>[Called By]<UL><LI><a href="#[12b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Init(__SPI_HandleTypeDef*)
 </UL>
 
-<P><STRONG><a name="[13c]"></a>Class_ICM42688::setAccelODR(Class_ICM42688::ODR)</STRONG> (Thumb, 108 bytes, Stack size 24 bytes, dvc_icm42688.o(.text._ZN14Class_ICM4268811setAccelODRENS_3ODRE))
+<P><STRONG><a name="[13d]"></a>Class_ICM42688::setAccelODR(Class_ICM42688::ODR)</STRONG> (Thumb, 108 bytes, Stack size 24 bytes, dvc_icm42688.o(.text._ZN14Class_ICM4268811setAccelODRENS_3ODRE))
 <BR><BR>[Stack]<UL><LI>Max Depth = 256<LI>Call Chain = Class_ICM42688::setAccelODR(Class_ICM42688::ODR) &rArr; Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*) &rArr; Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short) &rArr; SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short) &rArr; HAL_SPI_TransmitReceive &rArr; SPI_WaitOnFlagUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*)
-<LI><a href="#[137]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setBank(unsigned char)
-<LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::writeRegister(unsigned char, unsigned char)
+<BR>[Calls]<UL><LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*)
+<LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setBank(unsigned char)
+<LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::writeRegister(unsigned char, unsigned char)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[129]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Init(__SPI_HandleTypeDef*)
+<BR>[Called By]<UL><LI><a href="#[12b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Init(__SPI_HandleTypeDef*)
 </UL>
 
-<P><STRONG><a name="[13d]"></a>Class_ICM42688::Get_Raw_Data()</STRONG> (Thumb, 140 bytes, Stack size 40 bytes, dvc_icm42688.o(.text._ZN14Class_ICM4268812Get_Raw_DataEv))
+<P><STRONG><a name="[13e]"></a>Class_ICM42688::Get_Raw_Data()</STRONG> (Thumb, 140 bytes, Stack size 40 bytes, dvc_icm42688.o(.text._ZN14Class_ICM4268812Get_Raw_DataEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 272<LI>Call Chain = Class_ICM42688::Get_Raw_Data() &rArr; Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*) &rArr; Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short) &rArr; SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short) &rArr; HAL_SPI_TransmitReceive &rArr; SPI_WaitOnFlagUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*)
+<BR>[Calls]<UL><LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Get_Data()
+<BR>[Called By]<UL><LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Get_Data()
 </UL>
 
-<P><STRONG><a name="[13e]"></a>Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short)</STRONG> (Thumb, 42 bytes, Stack size 24 bytes, dvc_icm42688.o(.text._ZN14Class_ICM4268812SPI_TransferEPhS0_t))
+<P><STRONG><a name="[13f]"></a>Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short)</STRONG> (Thumb, 42 bytes, Stack size 24 bytes, dvc_icm42688.o(.text._ZN14Class_ICM4268812SPI_TransferEPhS0_t))
 <BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short) &rArr; SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short) &rArr; HAL_SPI_TransmitReceive &rArr; SPI_WaitOnFlagUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short)
+<BR>[Calls]<UL><LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*)
-<LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::writeRegister(unsigned char, unsigned char)
-</UL>
-
-<P><STRONG><a name="[13f]"></a>Class_ICM42688::calibrateGyro()</STRONG> (Thumb, 276 bytes, Stack size 32 bytes, dvc_icm42688.o(.text._ZN14Class_ICM4268813calibrateGyroEv))
-<BR><BR>[Stack]<UL><LI>Max Depth = 328<LI>Call Chain = Class_ICM42688::calibrateGyro() &rArr; Class_ICM42688::Get_Data() &rArr; Class_ICM42688::Get_Raw_Data() &rArr; Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*) &rArr; Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short) &rArr; SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short) &rArr; HAL_SPI_TransmitReceive &rArr; SPI_WaitOnFlagUntilTimeout
-</UL>
-<BR>[Calls]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[125]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Get_GyrZ() const
-<LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Get_GyrY() const
-<LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Get_GyrX() const
-<LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Get_Data()
-<LI><a href="#[140]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setGyroFS(Class_ICM42688::GyroFS)
-</UL>
-<BR>[Called By]<UL><LI><a href="#[129]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Init(__SPI_HandleTypeDef*)
+<BR>[Called By]<UL><LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*)
+<LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::writeRegister(unsigned char, unsigned char)
 </UL>
 
-<P><STRONG><a name="[138]"></a>Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*)</STRONG> (Thumb, 102 bytes, Stack size 64 bytes, dvc_icm42688.o(.text._ZN14Class_ICM4268813readRegistersEhhPh))
+<P><STRONG><a name="[13a]"></a>Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*)</STRONG> (Thumb, 102 bytes, Stack size 64 bytes, dvc_icm42688.o(.text._ZN14Class_ICM4268813readRegistersEhhPh))
 <BR><BR>[Stack]<UL><LI>Max Depth = 232<LI>Call Chain = Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*) &rArr; Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short) &rArr; SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short) &rArr; HAL_SPI_TransmitReceive &rArr; SPI_WaitOnFlagUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[13e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short)
-<LI><a href="#[141]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy
+<BR>[Calls]<UL><LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short)
+<LI><a href="#[140]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy
 </UL>
-<BR>[Called By]<UL><LI><a href="#[13d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Get_Raw_Data()
-<LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setAccelODR(Class_ICM42688::ODR)
-<LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setGyroODR(Class_ICM42688::ODR)
-<LI><a href="#[140]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setGyroFS(Class_ICM42688::GyroFS)
-<LI><a href="#[136]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setAccelFS(Class_ICM42688::AccelFS)
-<LI><a href="#[143]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::whoAmI()
+<BR>[Called By]<UL><LI><a href="#[13e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Get_Raw_Data()
+<LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setGyroODR(Class_ICM42688::ODR)
+<LI><a href="#[142]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setGyroFS(Class_ICM42688::GyroFS)
+<LI><a href="#[13d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setAccelODR(Class_ICM42688::ODR)
+<LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setAccelFS(Class_ICM42688::AccelFS)
+<LI><a href="#[141]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::whoAmI()
 </UL>
 
-<P><STRONG><a name="[139]"></a>Class_ICM42688::writeRegister(unsigned char, unsigned char)</STRONG> (Thumb, 82 bytes, Stack size 24 bytes, dvc_icm42688.o(.text._ZN14Class_ICM4268813writeRegisterEhh))
+<P><STRONG><a name="[13b]"></a>Class_ICM42688::writeRegister(unsigned char, unsigned char)</STRONG> (Thumb, 82 bytes, Stack size 24 bytes, dvc_icm42688.o(.text._ZN14Class_ICM4268813writeRegisterEhh))
 <BR><BR>[Stack]<UL><LI>Max Depth = 192<LI>Call Chain = Class_ICM42688::writeRegister(unsigned char, unsigned char) &rArr; Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short) &rArr; SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short) &rArr; HAL_SPI_TransmitReceive &rArr; SPI_WaitOnFlagUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[13e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short)
+<BR>[Calls]<UL><LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[137]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setBank(unsigned char)
-<LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setAccelODR(Class_ICM42688::ODR)
-<LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setGyroODR(Class_ICM42688::ODR)
-<LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setFilters(bool, bool)
-<LI><a href="#[140]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setGyroFS(Class_ICM42688::GyroFS)
-<LI><a href="#[136]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setAccelFS(Class_ICM42688::AccelFS)
-<LI><a href="#[142]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::reset()
-<LI><a href="#[129]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Init(__SPI_HandleTypeDef*)
+<BR>[Called By]<UL><LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setBank(unsigned char)
+<LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setGyroODR(Class_ICM42688::ODR)
+<LI><a href="#[142]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setGyroFS(Class_ICM42688::GyroFS)
+<LI><a href="#[13d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setAccelODR(Class_ICM42688::ODR)
+<LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setAccelFS(Class_ICM42688::AccelFS)
+<LI><a href="#[12b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Init(__SPI_HandleTypeDef*)
 </UL>
 
-<P><STRONG><a name="[129]"></a>Class_ICM42688::Init(__SPI_HandleTypeDef*)</STRONG> (Thumb, 226 bytes, Stack size 32 bytes, dvc_icm42688.o(.text._ZN14Class_ICM426884InitEP19__SPI_HandleTypeDef))
-<BR><BR>[Stack]<UL><LI>Max Depth = 360<LI>Call Chain = Class_ICM42688::Init(__SPI_HandleTypeDef*) &rArr; Class_ICM42688::calibrateGyro() &rArr; Class_ICM42688::Get_Data() &rArr; Class_ICM42688::Get_Raw_Data() &rArr; Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*) &rArr; Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short) &rArr; SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short) &rArr; HAL_SPI_TransmitReceive &rArr; SPI_WaitOnFlagUntilTimeout
+<P><STRONG><a name="[12b]"></a>Class_ICM42688::Init(__SPI_HandleTypeDef*)</STRONG> (Thumb, 312 bytes, Stack size 48 bytes, dvc_icm42688.o(.text._ZN14Class_ICM426884InitEP19__SPI_HandleTypeDef))
+<BR><BR>[Stack]<UL><LI>Max Depth = 344<LI>Call Chain = Class_ICM42688::Init(__SPI_HandleTypeDef*) &rArr; Class_ICM42688::Get_Data() &rArr; Class_ICM42688::Get_Raw_Data() &rArr; Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*) &rArr; Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short) &rArr; SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short) &rArr; HAL_SPI_TransmitReceive &rArr; SPI_WaitOnFlagUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setAccelODR(Class_ICM42688::ODR)
-<LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setGyroODR(Class_ICM42688::ODR)
-<LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::calibrateGyro()
-<LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setFilters(bool, bool)
-<LI><a href="#[140]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setGyroFS(Class_ICM42688::GyroFS)
-<LI><a href="#[136]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setAccelFS(Class_ICM42688::AccelFS)
-<LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::writeRegister(unsigned char, unsigned char)
-<LI><a href="#[143]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::whoAmI()
-<LI><a href="#[142]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::reset()
+<BR>[Calls]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
+<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Get_Data()
+<LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setGyroODR(Class_ICM42688::ODR)
+<LI><a href="#[142]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setGyroFS(Class_ICM42688::GyroFS)
+<LI><a href="#[13d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setAccelODR(Class_ICM42688::ODR)
+<LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setAccelFS(Class_ICM42688::AccelFS)
+<LI><a href="#[141]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::whoAmI()
+<LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::writeRegister(unsigned char, unsigned char)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::Init()
 </UL>
 
-<P><STRONG><a name="[142]"></a>Class_ICM42688::reset()</STRONG> (Thumb, 38 bytes, Stack size 24 bytes, dvc_icm42688.o(.text._ZN14Class_ICM426885resetEv))
-<BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = Class_ICM42688::reset() &rArr; Class_ICM42688::setBank(unsigned char) &rArr; Class_ICM42688::writeRegister(unsigned char, unsigned char) &rArr; Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short) &rArr; SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short) &rArr; HAL_SPI_TransmitReceive &rArr; SPI_WaitOnFlagUntilTimeout
-</UL>
-<BR>[Calls]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[137]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setBank(unsigned char)
-<LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::writeRegister(unsigned char, unsigned char)
-</UL>
-<BR>[Called By]<UL><LI><a href="#[129]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Init(__SPI_HandleTypeDef*)
-</UL>
-
-<P><STRONG><a name="[143]"></a>Class_ICM42688::whoAmI()</STRONG> (Thumb, 62 bytes, Stack size 24 bytes, dvc_icm42688.o(.text._ZN14Class_ICM426886whoAmIEv))
+<P><STRONG><a name="[141]"></a>Class_ICM42688::whoAmI()</STRONG> (Thumb, 62 bytes, Stack size 24 bytes, dvc_icm42688.o(.text._ZN14Class_ICM426886whoAmIEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 256<LI>Call Chain = Class_ICM42688::whoAmI() &rArr; Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*) &rArr; Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short) &rArr; SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short) &rArr; HAL_SPI_TransmitReceive &rArr; SPI_WaitOnFlagUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*)
-<LI><a href="#[137]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setBank(unsigned char)
+<BR>[Calls]<UL><LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*)
+<LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setBank(unsigned char)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[129]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Init(__SPI_HandleTypeDef*)
+<BR>[Called By]<UL><LI><a href="#[12b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Init(__SPI_HandleTypeDef*)
 </UL>
 
-<P><STRONG><a name="[137]"></a>Class_ICM42688::setBank(unsigned char)</STRONG> (Thumb, 64 bytes, Stack size 24 bytes, dvc_icm42688.o(.text._ZN14Class_ICM426887setBankEh))
+<P><STRONG><a name="[139]"></a>Class_ICM42688::setBank(unsigned char)</STRONG> (Thumb, 64 bytes, Stack size 24 bytes, dvc_icm42688.o(.text._ZN14Class_ICM426887setBankEh))
 <BR><BR>[Stack]<UL><LI>Max Depth = 216<LI>Call Chain = Class_ICM42688::setBank(unsigned char) &rArr; Class_ICM42688::writeRegister(unsigned char, unsigned char) &rArr; Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short) &rArr; SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short) &rArr; HAL_SPI_TransmitReceive &rArr; SPI_WaitOnFlagUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::writeRegister(unsigned char, unsigned char)
+<BR>[Calls]<UL><LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::writeRegister(unsigned char, unsigned char)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setAccelODR(Class_ICM42688::ODR)
-<LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setGyroODR(Class_ICM42688::ODR)
-<LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setFilters(bool, bool)
-<LI><a href="#[140]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setGyroFS(Class_ICM42688::GyroFS)
-<LI><a href="#[136]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setAccelFS(Class_ICM42688::AccelFS)
-<LI><a href="#[143]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::whoAmI()
-<LI><a href="#[142]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::reset()
+<BR>[Called By]<UL><LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setGyroODR(Class_ICM42688::ODR)
+<LI><a href="#[142]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setGyroFS(Class_ICM42688::GyroFS)
+<LI><a href="#[13d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setAccelODR(Class_ICM42688::ODR)
+<LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setAccelFS(Class_ICM42688::AccelFS)
+<LI><a href="#[141]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::whoAmI()
 </UL>
 
-<P><STRONG><a name="[120]"></a>Class_ICM42688::Get_Data()</STRONG> (Thumb, 292 bytes, Stack size 24 bytes, dvc_icm42688.o(.text._ZN14Class_ICM426888Get_DataEv))
+<P><STRONG><a name="[122]"></a>Class_ICM42688::Get_Data()</STRONG> (Thumb, 292 bytes, Stack size 24 bytes, dvc_icm42688.o(.text._ZN14Class_ICM426888Get_DataEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 296<LI>Call Chain = Class_ICM42688::Get_Data() &rArr; Class_ICM42688::Get_Raw_Data() &rArr; Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*) &rArr; Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short) &rArr; SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short) &rArr; HAL_SPI_TransmitReceive &rArr; SPI_WaitOnFlagUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[13d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Get_Raw_Data()
+<BR>[Calls]<UL><LI><a href="#[13e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Get_Raw_Data()
 </UL>
-<BR>[Called By]<UL><LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::Update_SensorData()
-<LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::calibrateGyro()
+<BR>[Called By]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::Update_SensorData()
+<LI><a href="#[12b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Init(__SPI_HandleTypeDef*)
 </UL>
 
-<P><STRONG><a name="[140]"></a>Class_ICM42688::setGyroFS(Class_ICM42688::GyroFS)</STRONG> (Thumb, 156 bytes, Stack size 24 bytes, dvc_icm42688.o(.text._ZN14Class_ICM426889setGyroFSENS_6GyroFSE))
+<P><STRONG><a name="[142]"></a>Class_ICM42688::setGyroFS(Class_ICM42688::GyroFS)</STRONG> (Thumb, 156 bytes, Stack size 24 bytes, dvc_icm42688.o(.text._ZN14Class_ICM426889setGyroFSENS_6GyroFSE))
 <BR><BR>[Stack]<UL><LI>Max Depth = 256<LI>Call Chain = Class_ICM42688::setGyroFS(Class_ICM42688::GyroFS) &rArr; Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*) &rArr; Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short) &rArr; SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short) &rArr; HAL_SPI_TransmitReceive &rArr; SPI_WaitOnFlagUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*)
-<LI><a href="#[137]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setBank(unsigned char)
-<LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::writeRegister(unsigned char, unsigned char)
+<BR>[Calls]<UL><LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*)
+<LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::setBank(unsigned char)
+<LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::writeRegister(unsigned char, unsigned char)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::calibrateGyro()
-<LI><a href="#[129]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Init(__SPI_HandleTypeDef*)
+<BR>[Called By]<UL><LI><a href="#[12b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::Init(__SPI_HandleTypeDef*)
 </UL>
 
-<P><STRONG><a name="[12d]"></a>Class_ICM42688::Class_ICM42688__sub_object()</STRONG> (Thumb, 524 bytes, Stack size 104 bytes, tsk_config_and_callback.o(.text._ZN14Class_ICM42688C2Ev))
+<P><STRONG><a name="[12f]"></a>Class_ICM42688::Class_ICM42688__sub_object()</STRONG> (Thumb, 524 bytes, Stack size 104 bytes, tsk_config_and_callback.o(.text._ZN14Class_ICM42688C2Ev))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = Class_ICM42688::Class_ICM42688__sub_object()
 </UL>
-<BR>[Called By]<UL><LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::Class_Chariot__sub_object()
+<BR>[Called By]<UL><LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::Class_Chariot__sub_object()
 </UL>
 
-<P><STRONG><a name="[126]"></a>Class_ICM42688::Get_AccX() const</STRONG> (Thumb, 14 bytes, Stack size 4 bytes, dvc_icm42688.o(.text._ZNK14Class_ICM426888Get_AccXEv))
+<P><STRONG><a name="[128]"></a>Class_ICM42688::Get_AccX() const</STRONG> (Thumb, 14 bytes, Stack size 4 bytes, dvc_icm42688.o(.text._ZNK14Class_ICM426888Get_AccXEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = Class_ICM42688::Get_AccX() const
 </UL>
 <BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::TIM_Calculate_PeriodElapsedCallback()
 </UL>
 
-<P><STRONG><a name="[127]"></a>Class_ICM42688::Get_AccY() const</STRONG> (Thumb, 14 bytes, Stack size 4 bytes, dvc_icm42688.o(.text._ZNK14Class_ICM426888Get_AccYEv))
+<P><STRONG><a name="[129]"></a>Class_ICM42688::Get_AccY() const</STRONG> (Thumb, 14 bytes, Stack size 4 bytes, dvc_icm42688.o(.text._ZNK14Class_ICM426888Get_AccYEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = Class_ICM42688::Get_AccY() const
 </UL>
 <BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::TIM_Calculate_PeriodElapsedCallback()
 </UL>
 
-<P><STRONG><a name="[128]"></a>Class_ICM42688::Get_AccZ() const</STRONG> (Thumb, 14 bytes, Stack size 4 bytes, dvc_icm42688.o(.text._ZNK14Class_ICM426888Get_AccZEv))
+<P><STRONG><a name="[12a]"></a>Class_ICM42688::Get_AccZ() const</STRONG> (Thumb, 14 bytes, Stack size 4 bytes, dvc_icm42688.o(.text._ZNK14Class_ICM426888Get_AccZEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = Class_ICM42688::Get_AccZ() const
 </UL>
 <BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::TIM_Calculate_PeriodElapsedCallback()
 </UL>
 
-<P><STRONG><a name="[123]"></a>Class_ICM42688::Get_GyrX() const</STRONG> (Thumb, 14 bytes, Stack size 4 bytes, dvc_icm42688.o(.text._ZNK14Class_ICM426888Get_GyrXEv))
+<P><STRONG><a name="[125]"></a>Class_ICM42688::Get_GyrX() const</STRONG> (Thumb, 14 bytes, Stack size 4 bytes, dvc_icm42688.o(.text._ZNK14Class_ICM426888Get_GyrXEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = Class_ICM42688::Get_GyrX() const
 </UL>
 <BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::TIM_Calculate_PeriodElapsedCallback()
-<LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::calibrateGyro()
 </UL>
 
-<P><STRONG><a name="[124]"></a>Class_ICM42688::Get_GyrY() const</STRONG> (Thumb, 14 bytes, Stack size 4 bytes, dvc_icm42688.o(.text._ZNK14Class_ICM426888Get_GyrYEv))
+<P><STRONG><a name="[126]"></a>Class_ICM42688::Get_GyrY() const</STRONG> (Thumb, 14 bytes, Stack size 4 bytes, dvc_icm42688.o(.text._ZNK14Class_ICM426888Get_GyrYEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = Class_ICM42688::Get_GyrY() const
 </UL>
 <BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::TIM_Calculate_PeriodElapsedCallback()
-<LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::calibrateGyro()
 </UL>
 
-<P><STRONG><a name="[125]"></a>Class_ICM42688::Get_GyrZ() const</STRONG> (Thumb, 14 bytes, Stack size 4 bytes, dvc_icm42688.o(.text._ZNK14Class_ICM426888Get_GyrZEv))
+<P><STRONG><a name="[127]"></a>Class_ICM42688::Get_GyrZ() const</STRONG> (Thumb, 14 bytes, Stack size 4 bytes, dvc_icm42688.o(.text._ZNK14Class_ICM426888Get_GyrZEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = Class_ICM42688::Get_GyrZ() const
 </UL>
 <BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::TIM_Calculate_PeriodElapsedCallback()
-<LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::calibrateGyro()
+</UL>
+
+<P><STRONG><a name="[10f]"></a>std::__2::__math::sqrt[abi:nn200000](float)</STRONG> (Thumb, 20 bytes, Stack size 16 bytes, mahony.o(.text._ZNSt3__26__math4sqrtB8nn200000Ef))
+<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = std::__2::__math::sqrt[abi:nn200000](float) &rArr; __hardfp_sqrtf &rArr; __set_errno
+</UL>
+<BR>[Calls]<UL><LI><a href="#[143]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sqrtf
+</UL>
+<BR>[Called By]<UL><LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MahonyAHRSupdate(float, float, float, float, float, float, float, float, float)
 </UL>
 
 <P><STRONG><a name="[6b]"></a>main</STRONG> (Thumb, 68 bytes, Stack size 16 bytes, main.o(.text.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 416 + Unknown Stack Size
-<LI>Call Chain = main &rArr; Task_Init &rArr; Class_Chariot::Init() &rArr; Class_ICM42688::Init(__SPI_HandleTypeDef*) &rArr; Class_ICM42688::calibrateGyro() &rArr; Class_ICM42688::Get_Data() &rArr; Class_ICM42688::Get_Raw_Data() &rArr; Class_ICM42688::readRegisters(unsigned char, unsigned char, unsigned char*) &rArr; Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short) &rArr; SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short) &rArr; HAL_SPI_TransmitReceive &rArr; SPI_WaitOnFlagUntilTimeout
+<BR><BR>[Stack]<UL><LI>Max Depth = 404 + Unknown Stack Size
+<LI>Call Chain = main &rArr; Task_Init &rArr; Class_Chariot::Init() &rArr; Class_BMP388::Init(__I2C_HandleTypeDef*) &rArr; Class_BMP388::Read_Calibration() &rArr; Class_BMP388::Read_Register(unsigned char, unsigned char*, unsigned short) &rArr; HAL_I2C_Mem_Read &rArr; I2C_RequestMemoryRead &rArr; I2C_WaitOnFlagUntilTimeout &rArr; I2C_IsErrorOccurred &rArr; I2C_Flush_TXDR
 </UL>
 <BR>[Calls]<UL><LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Task_Init
 <LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_TIM2_Init
@@ -2091,11 +2070,11 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[145]"></a>__ARM_fpclassifyf</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, fpclassifyf.o(i.__ARM_fpclassifyf))
-<BR><BR>[Called By]<UL><LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2f
-<LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asinf
+<BR><BR>[Called By]<UL><LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2f
+<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asinf
 </UL>
 
-<P><STRONG><a name="[10f]"></a>__hardfp_asinf</STRONG> (Thumb, 258 bytes, Stack size 16 bytes, asinf.o(i.__hardfp_asinf))
+<P><STRONG><a name="[111]"></a>__hardfp_asinf</STRONG> (Thumb, 258 bytes, Stack size 16 bytes, asinf.o(i.__hardfp_asinf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = __hardfp_asinf &rArr; sqrtf &rArr; __set_errno
 </UL>
 <BR>[Calls]<UL><LI><a href="#[146]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_flt_underflow
@@ -2105,10 +2084,11 @@ Global Symbols
 <LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
 <LI><a href="#[144]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sqrtf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MahonyAHRSupdateIMU(float, float, float, float, float, float)
+<BR>[Called By]<UL><LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MahonyAHRSupdateIMU(float, float, float, float, float, float)
+<LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MahonyAHRSupdate(float, float, float, float, float, float, float, float, float)
 </UL>
 
-<P><STRONG><a name="[10e]"></a>__hardfp_atan2f</STRONG> (Thumb, 594 bytes, Stack size 32 bytes, atan2f.o(i.__hardfp_atan2f))
+<P><STRONG><a name="[110]"></a>__hardfp_atan2f</STRONG> (Thumb, 594 bytes, Stack size 32 bytes, atan2f.o(i.__hardfp_atan2f))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = __hardfp_atan2f &rArr; __set_errno
 </UL>
 <BR>[Calls]<UL><LI><a href="#[146]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_flt_underflow
@@ -2116,24 +2096,33 @@ Global Symbols
 <LI><a href="#[145]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassifyf
 <LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
 </UL>
-<BR>[Called By]<UL><LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MahonyAHRSupdateIMU(float, float, float, float, float, float)
+<BR>[Called By]<UL><LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MahonyAHRSupdateIMU(float, float, float, float, float, float)
+<LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MahonyAHRSupdate(float, float, float, float, float, float, float, float, float)
+</UL>
+
+<P><STRONG><a name="[143]"></a>__hardfp_sqrtf</STRONG> (Thumb, 58 bytes, Stack size 16 bytes, sqrtf.o(i.__hardfp_sqrtf))
+<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = __hardfp_sqrtf &rArr; __set_errno
+</UL>
+<BR>[Calls]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
+</UL>
+<BR>[Called By]<UL><LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;std::__2::__math::sqrt[abi:nn200000](float)
 </UL>
 
 <P><STRONG><a name="[147]"></a>__mathlib_flt_infnan</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, funder.o(i.__mathlib_flt_infnan))
-<BR><BR>[Called By]<UL><LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asinf
+<BR><BR>[Called By]<UL><LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asinf
 </UL>
 
 <P><STRONG><a name="[149]"></a>__mathlib_flt_infnan2</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, funder.o(i.__mathlib_flt_infnan2))
-<BR><BR>[Called By]<UL><LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2f
+<BR><BR>[Called By]<UL><LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2f
 </UL>
 
 <P><STRONG><a name="[148]"></a>__mathlib_flt_invalid</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, funder.o(i.__mathlib_flt_invalid))
-<BR><BR>[Called By]<UL><LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asinf
+<BR><BR>[Called By]<UL><LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asinf
 </UL>
 
 <P><STRONG><a name="[146]"></a>__mathlib_flt_underflow</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, funder.o(i.__mathlib_flt_underflow))
-<BR><BR>[Called By]<UL><LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2f
-<LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asinf
+<BR><BR>[Called By]<UL><LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2f
+<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asinf
 </UL>
 
 <P><STRONG><a name="[144]"></a>sqrtf</STRONG> (Thumb, 62 bytes, Stack size 16 bytes, sqrtf.o(i.sqrtf))
@@ -2141,14 +2130,14 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
 </UL>
-<BR>[Called By]<UL><LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asinf
+<BR>[Called By]<UL><LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asinf
 </UL>
 
-<P><STRONG><a name="[11b]"></a>__aeabi_d2f</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, d2f.o(x$fpl$d2f))
+<P><STRONG><a name="[11d]"></a>__aeabi_d2f</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, d2f.o(x$fpl$d2f))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_d2f
 </UL>
-<BR>[Called By]<UL><LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Compensate_Pressure()
-<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Compensate_Temperature()
+<BR>[Called By]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Compensate_Pressure()
+<LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Compensate_Temperature()
 </UL>
 
 <P><STRONG><a name="[14a]"></a>_d2f</STRONG> (Thumb, 98 bytes, Stack size 32 bytes, d2f.o(x$fpl$d2f), UNUSED)
@@ -2156,11 +2145,11 @@ Global Symbols
 <LI><a href="#[14c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dnaninf
 </UL>
 
-<P><STRONG><a name="[119]"></a>__aeabi_dadd</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, daddsub_clz.o(x$fpl$dadd))
+<P><STRONG><a name="[11b]"></a>__aeabi_dadd</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, daddsub_clz.o(x$fpl$dadd))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_dadd
 </UL>
-<BR>[Called By]<UL><LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Compensate_Pressure()
-<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Compensate_Temperature()
+<BR>[Called By]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Compensate_Pressure()
+<LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Compensate_Temperature()
 </UL>
 
 <P><STRONG><a name="[14d]"></a>_dadd</STRONG> (Thumb, 332 bytes, Stack size 16 bytes, daddsub_clz.o(x$fpl$dadd), UNUSED)
@@ -2169,25 +2158,25 @@ Global Symbols
 <LI><a href="#[14e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dsub1
 </UL>
 
-<P><STRONG><a name="[114]"></a>__aeabi_i2d</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, dflt_clz.o(x$fpl$dflt))
-<BR><BR>[Called By]<UL><LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Read_Calibration()
+<P><STRONG><a name="[116]"></a>__aeabi_i2d</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, dflt_clz.o(x$fpl$dflt))
+<BR><BR>[Called By]<UL><LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Read_Calibration()
 </UL>
 
 <P><STRONG><a name="[18a]"></a>_dflt</STRONG> (Thumb, 46 bytes, Stack size 0 bytes, dflt_clz.o(x$fpl$dflt), UNUSED)
 
-<P><STRONG><a name="[11a]"></a>__aeabi_ui2d</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, dflt_clz.o(x$fpl$dfltu))
-<BR><BR>[Called By]<UL><LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Compensate_Pressure()
-<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Compensate_Temperature()
+<P><STRONG><a name="[11c]"></a>__aeabi_ui2d</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, dflt_clz.o(x$fpl$dfltu))
+<BR><BR>[Called By]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Compensate_Pressure()
+<LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Compensate_Temperature()
 </UL>
 
 <P><STRONG><a name="[18b]"></a>_dfltu</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, dflt_clz.o(x$fpl$dfltu), UNUSED)
 
-<P><STRONG><a name="[115]"></a>__aeabi_dmul</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, dmul.o(x$fpl$dmul))
+<P><STRONG><a name="[117]"></a>__aeabi_dmul</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, dmul.o(x$fpl$dmul))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_dmul
 </UL>
-<BR>[Called By]<UL><LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Compensate_Pressure()
-<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Compensate_Temperature()
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Read_Calibration()
+<BR>[Called By]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Compensate_Pressure()
+<LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Compensate_Temperature()
+<LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Read_Calibration()
 </UL>
 
 <P><STRONG><a name="[150]"></a>_dmul</STRONG> (Thumb, 332 bytes, Stack size 32 bytes, dmul.o(x$fpl$dmul), UNUSED)
@@ -2208,11 +2197,11 @@ Global Symbols
 <LI><a href="#[14d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dadd
 </UL>
 
-<P><STRONG><a name="[116]"></a>__aeabi_dsub</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, daddsub_clz.o(x$fpl$dsub))
+<P><STRONG><a name="[118]"></a>__aeabi_dsub</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, daddsub_clz.o(x$fpl$dsub))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_dsub
 </UL>
-<BR>[Called By]<UL><LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Compensate_Temperature()
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Read_Calibration()
+<BR>[Called By]<UL><LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Compensate_Temperature()
+<LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Read_Calibration()
 </UL>
 
 <P><STRONG><a name="[151]"></a>_dsub</STRONG> (Thumb, 472 bytes, Stack size 32 bytes, daddsub_clz.o(x$fpl$dsub), UNUSED)
@@ -2220,10 +2209,10 @@ Global Symbols
 <LI><a href="#[152]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dadd1
 </UL>
 
-<P><STRONG><a name="[118]"></a>__aeabi_f2d</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, f2d.o(x$fpl$f2d))
+<P><STRONG><a name="[11a]"></a>__aeabi_f2d</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, f2d.o(x$fpl$f2d))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_f2d
 </UL>
-<BR>[Called By]<UL><LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Compensate_Pressure()
+<BR>[Called By]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_BMP388::Compensate_Pressure()
 </UL>
 
 <P><STRONG><a name="[153]"></a>_f2d</STRONG> (Thumb, 86 bytes, Stack size 16 bytes, f2d.o(x$fpl$f2d), UNUSED)
@@ -2541,25 +2530,26 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_ConfigClockSource
 </UL>
 
-<P><STRONG><a name="[110]"></a>SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short)</STRONG> (Thumb, 122 bytes, Stack size 48 bytes, dvc_icm42688.o(.text._ZL20SPI_Transmit_ReceiveP19__SPI_HandleTypeDefPhS1_t))
+<P><STRONG><a name="[112]"></a>SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short)</STRONG> (Thumb, 122 bytes, Stack size 48 bytes, dvc_icm42688.o(.text._ZL20SPI_Transmit_ReceiveP19__SPI_HandleTypeDefPhS1_t))
 <BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = SPI_Transmit_Receive(__SPI_HandleTypeDef*, unsigned char*, unsigned char*, unsigned short) &rArr; HAL_SPI_TransmitReceive &rArr; SPI_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
 <LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_TransmitReceive
 </UL>
-<BR>[Called By]<UL><LI><a href="#[13e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short)
+<BR>[Called By]<UL><LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_ICM42688::SPI_Transfer(unsigned char*, unsigned char*, unsigned short)
 </UL>
 
-<P><STRONG><a name="[10d]"></a>invSqrt(float)</STRONG> (Thumb, 90 bytes, Stack size 16 bytes, mahony.o(.text._ZL7invSqrtf))
+<P><STRONG><a name="[10e]"></a>invSqrt(float)</STRONG> (Thumb, 90 bytes, Stack size 16 bytes, mahony.o(.text._ZL7invSqrtf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = invSqrt(float)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MahonyAHRSupdateIMU(float, float, float, float, float, float)
+<BR>[Called By]<UL><LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MahonyAHRSupdateIMU(float, float, float, float, float, float)
+<LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MahonyAHRSupdate(float, float, float, float, float, float, float, float, float)
 </UL>
 
 <P><STRONG><a name="[109]"></a>__cxx_global_var_init</STRONG> (Thumb, 16 bytes, Stack size 8 bytes, tsk_config_and_callback.o(.text.__cxx_global_var_init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = __cxx_global_var_init &rArr; Class_Chariot::Class_Chariot__sub_object() &rArr; Class_ICM42688::Class_ICM42688__sub_object()
 </UL>
-<BR>[Calls]<UL><LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::Class_Chariot__sub_object()
+<BR>[Calls]<UL><LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Class_Chariot::Class_Chariot__sub_object()
 </UL>
 <BR>[Called By]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_GLOBAL__sub_I_tsk_config_and_callback.cpp
 </UL>

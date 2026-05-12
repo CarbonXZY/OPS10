@@ -12,7 +12,7 @@ void Task_Init(void)
 {
     DWT_Init();
     SPI_Init(&hspi2, nullptr);
-    TIM_Init(&htim2, Task10ms_TIM2_Callback);
+    TIM_Init(&htim2, Task1ms_TIM2_Callback);
 
     chaiot.Init();
 
@@ -24,7 +24,7 @@ void Task_Init(void)
 
 static uint32_t time1 ;
 static uint32_t time2 ;
-void Task10ms_TIM2_Callback()
+void Task1ms_TIM2_Callback()
 {
 		time1 = DWT_GetCurrentTimeUs();
     chaiot.TIM_Calculate_PeriodElapsedCallback();

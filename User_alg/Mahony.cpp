@@ -1,9 +1,9 @@
 #include "Mahony.h"
 
 // Definitions
-#define sampleFreq 100.0f      // sample frequency in Hz
-#define twoKpDef (2.0f * 0.1f) // 2 * proportional gain (降低以抑制加速度计高频噪声)
-#define twoKiDef (2.0f * 0.0f) // 2 * integral gain
+#define sampleFreq 1000.0f      // sample frequency in Hz
+#define twoKpDef (2.0f * 5.0f) // 2 * proportional gain
+#define twoKiDef (2.0f * 1.0f) // 2 * integral gain
 
 // Variable definitions
 volatile float twoKp = twoKpDef;                                           // 2 * proportional gain (Kp)
@@ -82,9 +82,10 @@ void MahonyAHRSupdate(float gx, float gy, float gz, float ax, float ay, float az
 
        // Error is sum of cross product between estimated direction and measured direction of field vectors
        // 通过向量外积得到重力加速度向量和地磁向量的实际值与测量值之间误差
-       halfex = (ay * halfvz - az * halfvy) + (my * halfwz - mz * halfwy);
-       halfey = (az * halfvx - ax * halfvz) + (mz * halfwx - mx * halfwz);
-       halfez = (ax * halfvy - ay * halfvx) + (mx * halfwy - my * halfwx);
+       // 磁力计增益降为0.5，抑制室内干扰同时保留收敛能力
+       halfex = (ay * halfvz - az * halfvy) + 0.5f * (my * halfwz - mz * halfwy);
+       halfey = (az * halfvx - ax * halfvz) + 0.5f * (mz * halfwx - mx * halfwz);
+       halfez = (ax * halfvy - ay * halfvx) + 0.5f * (mx * halfwy - my * halfwx);
 
        // Compute and apply integral feedback if enabled
        // 在PI补偿器中积分项使能情况下计算并应用积分项

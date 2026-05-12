@@ -38,8 +38,11 @@ int Class_ICM42688::Init(SPI_HandleTypeDef *hspi)
 {
     _hspi = hspi;
 
-    // 复位ICM42688
-    reset();
+    // 配置大端序（必须在reset之前设置，与C版本一致）
+    writeRegister(UB0_REG_INTF_CONFIG0, 0x90);
+
+    // 配置电源管理：6轴低噪声模式
+    writeRegister(UB0_REG_PWR_MGMT0, 0x0F);
 
     // 检查WHO AM I寄存器
     if (whoAmI() != WHO_AM_I)
@@ -47,46 +50,48 @@ int Class_ICM42688::Init(SPI_HandleTypeDef *hspi)
         return -3;
     }
 
-    // 在低噪声(LN)模式下开启加速度计和陀螺仪
-    if (writeRegister(UB0_REG_PWR_MGMT0, 0x0F) < 0)
+    // 配置加速度计：±8g, 1kHz ODR
+    int ret = setAccelFS(gpm8);
+    if (ret < 0)
     {
-        return -4;
+        return ret;
     }
-
-    // 2G为默认值 -- 用于设置加速度计量程缩放因子（降低噪声，提升分辨率）
-    int ret = setAccelFS(gpm2);
+    ret = setAccelODR(odr1k);
     if (ret < 0)
     {
         return ret;
     }
 
-    // 2000DPS为默认值 -- 用于设置陀螺仪量程缩放因子
-    ret = setGyroFS(dps2000);
+    // 配置陀螺仪：±500dps, 1kHz ODR
+    ret = setGyroFS(dps500);
+    if (ret < 0)
+    {
+        return ret;
+    }
+    ret = setGyroODR(odr1k);
     if (ret < 0)
     {
         return ret;
     }
 
-    // 启用内部滤波器(陷波滤波器、抗混叠滤波器、UI滤波器组)
-    if (setFilters(true, true) < 0)
+    HAL_Delay(100);
+
+    // 估计陀螺仪零偏（不切换量程，避免_scale被重新计算）
     {
-        return -7;
+        float sum[3] = {0, 0, 0};
+        for (int i = 0; i < NUM_CALIB_SAMPLES; i++)
+        {
+            Get_Data();
+            sum[0] += Gyro[0];
+            sum[1] += Gyro[1];
+            sum[2] += Gyro[2];
+            delay(1);
+        }
+        _gyrB[0] = sum[0] / NUM_CALIB_SAMPLES;
+        _gyrB[1] = sum[1] / NUM_CALIB_SAMPLES;
+        _gyrB[2] = sum[2] / NUM_CALIB_SAMPLES;
     }
 
-    // 估计陀螺仪零偏
-    if (calibrateGyro() < 0)
-    {
-        return -8;
-    }
-		
-	if (setGyroODR(odr100) < 0) // 设置100Hz输出，匹配Mahony采样率
-    {
-        return -9;
-    }
-    if (setAccelODR(odr100) < 0)
-    {
-        return -10;
-    }
     // 初始化成功，返回1
     return 1;
 }

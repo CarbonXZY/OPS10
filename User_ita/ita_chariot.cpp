@@ -23,7 +23,10 @@ void Class_Chariot::TIM_Calculate_PeriodElapsedCallback()
 //         icm42688.Get_AccX(), icm42688.Get_AccY(), icm42688.Get_AccZ(),
 //         mmc5983.magnet_data.x, mmc5983.magnet_data.y, mmc5983.magnet_data.z);
 
-    MahonyAHRSupdateIMU(icm42688.Get_GyrX(), icm42688.Get_GyrY(), icm42688.Get_GyrZ(),icm42688.Get_AccX(), icm42688.Get_AccY(), icm42688.Get_AccZ());
+    MahonyAHRSupdate(
+         icm42688.Get_GyrX(), icm42688.Get_GyrY(), icm42688.Get_GyrZ(),
+         icm42688.Get_AccX(), icm42688.Get_AccY(), icm42688.Get_AccZ(),
+         mmc5983.magnet_data.x, mmc5983.magnet_data.y, mmc5983.magnet_data.z);
         //Calculate_Position();
 }
 
