@@ -3,16 +3,18 @@
 
 #include "Mahony.h"
 #include "QuaternionEKF.h"
+#include "Quaternion_EKF.hpp"
+#include "arm_math.h"
+#include "drv_can.h"
 #include "dvc_BMP388.h"
 #include "dvc_ICM42688.h"
 #include "dvc_MMC5983.h"
 #include "dvc_MT6816.h"
-#include "drv_can.h"
-#include "arm_math.h"
-
+#include "dvc_dwt.h"
 class Class_Chariot
 {
 public:
+    QuaternionEKF<7, 6> EKF; // 四元数EKF，状态维度7（4四元数+3陀螺仪零偏），观测维度6（3加速度计+3磁力计）
     // 传感器对象
     // BMP388气压计
     Class_BMP388 bmp388;
@@ -34,11 +36,12 @@ public:
 private:
     float Position_X = 0.0f;
     float Position_Y = 0.0f;
-    //float Position_Z; // 未来需要高度可以添加
+    // float Position_Z; // 未来需要高度可以添加
 
     float last_x = 0.0f, last_y = 0.0f; // 上一次的位置
-    float now_x = 0.0f, now_y = 0.0f; // 当前的位置
+    float now_x = 0.0f, now_y = 0.0f;   // 当前的位置
 
+    uint32_t dwt_cnt = 0; // DWT计数器，用于计算时间增量
 
     void Update_SensorData();
     void Calculate_Position();

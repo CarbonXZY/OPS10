@@ -729,6 +729,21 @@
               <FileType>5</FileType>
               <FilePath>..\User_alg\Mahony.h</FilePath>
             </File>
+            <File>
+              <FileName>kalman_filter.hpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\User_alg\kalman_filter.hpp</FilePath>
+            </File>
+            <File>
+              <FileName>Quaternion_EKF.hpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\User_alg\Quaternion_EKF.hpp</FilePath>
+            </File>
+            <File>
+              <FileName>Matrix.hpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\User_alg\Matrix.hpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

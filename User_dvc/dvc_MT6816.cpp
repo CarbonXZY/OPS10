@@ -51,9 +51,9 @@ void Class_MT6816::Init(SPI_HandleTypeDef *_hspi, GPIO_TypeDef *_cs_gpio_port, u
     {
         SPI_Manage_Object = &SPI1_Manage_Object;
     }
-    else if (_hspi->Instance == SPI2)
+    else if (_hspi->Instance == SPI3)
     {
-        SPI_Manage_Object = &SPI2_Manage_Object;
+        SPI_Manage_Object = &SPI3_Manage_Object;
     }
 
     SPI_Manage_Object->SPI_Handler = _hspi;

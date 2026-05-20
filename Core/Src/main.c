@@ -103,6 +103,7 @@ int main(void)
   MX_TIM1_Init();
   MX_USB_PCD_Init();
   MX_TIM2_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
   Task_Init();
   /* USER CODE END 2 */
@@ -136,17 +137,17 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI48|RCC_OSCILLATORTYPE_HSE;
-  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-  RCC_OscInitStruct.HSI48State = RCC_HSI48_ON;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_CSI;
+  RCC_OscInitStruct.CSIState = RCC_CSI_ON;
+  RCC_OscInitStruct.CSICalibrationValue = RCC_CSICALIBRATION_DEFAULT;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLL1_SOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLM = 2;
-  RCC_OscInitStruct.PLL.PLLN = 40;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLL1_SOURCE_CSI;
+  RCC_OscInitStruct.PLL.PLLM = 1;
+  RCC_OscInitStruct.PLL.PLLN = 125;
   RCC_OscInitStruct.PLL.PLLP = 2;
   RCC_OscInitStruct.PLL.PLLQ = 2;
   RCC_OscInitStruct.PLL.PLLR = 2;
-  RCC_OscInitStruct.PLL.PLLRGE = RCC_PLL1_VCIRANGE_3;
+  RCC_OscInitStruct.PLL.PLLRGE = RCC_PLL1_VCIRANGE_2;
   RCC_OscInitStruct.PLL.PLLVCOSEL = RCC_PLL1_VCORANGE_WIDE;
   RCC_OscInitStruct.PLL.PLLFRACN = 0;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)

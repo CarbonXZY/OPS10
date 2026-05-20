@@ -2,12 +2,14 @@
 
 // Definitions
 #define sampleFreq 1000.0f      // sample frequency in Hz
-#define twoKpDef (2.0f * 5.0f) // 2 * proportional gain
+#define twoKpDef (2.0f * 5.0f) // 2 * proportional gain (加速度计)
 #define twoKiDef (2.0f * 1.0f) // 2 * integral gain
+#define twoKpMagDef (2.0f * 10.0f) // 2 * proportional gain (磁力计，高增益快收敛)
 
 // Variable definitions
 volatile float twoKp = twoKpDef;                                           // 2 * proportional gain (Kp)
 volatile float twoKi = twoKiDef;                                           // 2 * integral gain (Ki)
+volatile float twoKpMag = twoKpMagDef;                                     // 2 * proportional gain (磁力计)
 volatile float q0 = 1.0f, q1 = 0.0f, q2 = 0.0f, q3 = 0.0f;                 // quaternion of sensor frame relative to auxiliary frame
 volatile float integralFBx = 0.0f, integralFBy = 0.0f, integralFBz = 0.0f; // integral error terms scaled by Ki
 float yaw = 0.0f, pitch = 0.0f, roll = 0.0f;
@@ -82,41 +84,36 @@ void MahonyAHRSupdate(float gx, float gy, float gz, float ax, float ay, float az
 
        // Error is sum of cross product between estimated direction and measured direction of field vectors
        // 通过向量外积得到重力加速度向量和地磁向量的实际值与测量值之间误差
-       // 磁力计增益降为0.5，抑制室内干扰同时保留收敛能力
-       halfex = (ay * halfvz - az * halfvy) + 0.5f * (my * halfwz - mz * halfwy);
-       halfey = (az * halfvx - ax * halfvz) + 0.5f * (mz * halfwx - mx * halfwz);
-       halfez = (ax * halfvy - ay * halfvx) + 0.5f * (mx * halfwy - my * halfwx);
+       float accEx = (ay * halfvz - az * halfvy);
+       float accEy = (az * halfvx - ax * halfvz);
+       float accEz = (ax * halfvy - ay * halfvx);
+       float magEx = (my * halfwz - mz * halfwy);
+       float magEy = (mz * halfwx - mx * halfwz);
+       float magEz = (mx * halfwy - my * halfwx);
 
        // Compute and apply integral feedback if enabled
        // 在PI补偿器中积分项使能情况下计算并应用积分项
        if (twoKi > 0.0f)
        {
-           // integral error scaled by Ki
-           // 积分过程
-           integralFBx += twoKi * halfex * (1.0f / sampleFreq);
-           integralFBy += twoKi * halfey * (1.0f / sampleFreq);
-           integralFBz += twoKi * halfez * (1.0f / sampleFreq);
+           integralFBx += twoKi * accEx * (1.0f / sampleFreq);
+           integralFBy += twoKi * accEy * (1.0f / sampleFreq);
+           integralFBz += twoKi * accEz * (1.0f / sampleFreq);
 
-           // apply integral feedback
-           // 应用误差补偿中的积分项
            gx += integralFBx;
            gy += integralFBy;
            gz += integralFBz;
        }
        else
        {
-           // prevent integral windup
-           // 避免为负值的Ki时积分异常饱和
            integralFBx = 0.0f;
            integralFBy = 0.0f;
            integralFBz = 0.0f;
        }
 
-       // Apply proportional feedback
-       // 应用误差补偿中的比例项
-       gx += twoKp * halfex;
-       gy += twoKp * halfey;
-       gz += twoKp * halfez;
+       // Apply proportional feedback — 加速度计和磁力计分别控制增益
+       gx += twoKp * accEx + twoKpMag * magEx;
+       gy += twoKp * accEy + twoKpMag * magEy;
+       gz += twoKp * accEz + twoKpMag * magEz;
    }
 
    // Integrate rate of change of quaternion
@@ -141,9 +138,9 @@ void MahonyAHRSupdate(float gx, float gy, float gz, float ax, float ay, float az
    q3 *= recipNorm;
 
    // Mahony官方程序到此结束，使用时只需在函数外进行四元数反解欧拉角即可完成全部姿态解算过程
-   roll = atan2f(2.0f * (q0 * q1 + q2 * q3), 1.0f - 2.0f * (q1 * q1 + q2 * q2));
-   pitch = asinf(2.0f * (q0 * q2 - q3 * q1));
-   yaw = atan2f(2.0f * (q0 * q3 + q1 * q2), 1.0f - 2.0f * (q2 * q2 + q3 * q3));
+   roll = atan2f(2.0f * (q0 * q1 + q2 * q3), 1.0f - 2.0f * (q1 * q1 + q2 * q2)) * 180.0f / PI;
+   pitch = asinf(2.0f * (q0 * q2 - q3 * q1)) * 180.0f / PI;
+   yaw = atan2f(2.0f * (q0 * q3 + q1 * q2), 1.0f - 2.0f * (q2 * q2 + q3 * q3)) * 180.0f / PI;
 }
 
 void MahonyAHRSupdateIMU(float gx, float gy, float gz, float ax, float ay, float az)
@@ -233,9 +230,9 @@ void MahonyAHRSupdateIMU(float gx, float gy, float gz, float ax, float ay, float
    q3 *= recipNorm;
 
    // Mahony官方程序到此结束，使用时只需在函数外进行四元数反解欧拉角即可完成全部姿态解算过程
-   roll = atan2f(2.0f * (q0 * q1 + q2 * q3), 1.0f - 2.0f * (q1 * q1 + q2 * q2));
-   pitch = asinf(2.0f * (q0 * q2 - q3 * q1));
-   yaw = atan2f(2.0f * (q0 * q3 + q1 * q2), 1.0f - 2.0f * (q2 * q2 + q3 * q3));
+   roll = atan2f(2.0f * (q0 * q1 + q2 * q3), 1.0f - 2.0f * (q1 * q1 + q2 * q2)) * 180.0f / PI;
+   pitch = asinf(2.0f * (q0 * q2 - q3 * q1)) * 180.0f / PI;
+   yaw = atan2f(2.0f * (q0 * q3 + q1 * q2), 1.0f - 2.0f * (q2 * q2 + q3 * q3)) * 180.0f / PI;
 }
 
 /**

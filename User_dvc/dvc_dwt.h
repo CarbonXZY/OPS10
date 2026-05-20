@@ -28,4 +28,6 @@ uint32_t DWT_GetCurrentTimeS();
 uint32_t DWT_GetCurrentTimeMs();
 uint32_t DWT_GetCurrentTimeUs();
 void DWT_Update();
+float DWT_GetDeltaT(uint32_t *cnt_last);
+double DWT_GetDeltaT64(uint32_t *cnt_last);
 #endif
