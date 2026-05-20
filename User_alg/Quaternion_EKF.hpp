@@ -110,6 +110,8 @@ protected:
     void UpdateEulerAngles();
     void ChiSquareTest();
 
+    bool m_mag_valid; // 动态裁剪: 本周期磁力计数据是否有效
+
 private:
     float m_Q1;      // 四元数过程噪声
     float m_Q2;      // 陀螺仪零偏过程噪声
@@ -147,7 +149,7 @@ private:
 // ==================== 构造函数 ====================
 template <size_t X_SIZE, size_t Z_SIZE>
 QuaternionEKF<X_SIZE, Z_SIZE>::QuaternionEKF()
-    : m_chi_square_threshold(1e-8f), m_converge_flag(false), m_stable_flag(false), m_error_count(0), m_update_count(0), m_yaw_round_count(0), m_yaw_last(0), m_yaw_total(0)
+    : m_chi_square_threshold(1e-8f), m_converge_flag(false), m_stable_flag(false), m_error_count(0), m_update_count(0), m_yaw_round_count(0), m_yaw_last(0), m_yaw_total(0), m_mag_valid(true)
 {
 }
 
@@ -170,9 +172,7 @@ void QuaternionEKF<X_SIZE, Z_SIZE>::Init(float process_noise_q,
     m_acc_lpf_coef = acc_lpf_coef;
     m_mag_lpf_coef = mag_lpf_coef;
     m_use_magnetometer = use_magnetometer;
-
-    // 基类构造函数已调用Init()初始化矩阵实例，此处仅填充数据
-    // (不重复调用 arm_mat_init_f32)
+    m_mag_valid = true;
 
     // 设置初始状态（单位四元数）
     this->xhat_data.fill(0);
@@ -291,6 +291,7 @@ void QuaternionEKF<X_SIZE, Z_SIZE>::Reset()
     m_stable_flag = false;
     m_error_count = 0;
     m_update_count = 0;
+    m_mag_valid = true;
 
     // 重置自适应增益
     m_adaptive_gain_scale = 1.0f;
@@ -426,8 +427,8 @@ void QuaternionEKF<X_SIZE, Z_SIZE>::User_Func_SetH()
     this->H_data[2 * X_SIZE + 2] = -dq2;
     this->H_data[2 * X_SIZE + 3] = dq3;
 
-    // 磁力计部分
-    if (m_use_magnetometer && Z_SIZE >= 6)
+    // 磁力计部分 (仅当磁力计数据有效时设置)
+    if (m_use_magnetometer && m_mag_valid && Z_SIZE >= 6)
     {
         // 当地磁场参考值 [Hx, Hy, Hz]，需要根据实际位置标定
         // 这里使用常见值：北半球，Hx指向北，Hz向下
@@ -569,8 +570,8 @@ void QuaternionEKF<X_SIZE, Z_SIZE>::User_Func_xhatUpdate()
     for (int i = 0; i < 3; i++)
         residual[i] = this->z_data[i] - pred_gravity[i];
 
-    // 磁力计残差
-    if (m_use_magnetometer && Z_SIZE >= 6)
+    // 磁力计残差 (仅当磁力计数据有效时计算)
+    if (m_use_magnetometer && m_mag_valid && Z_SIZE >= 6)
     {
         // 预测磁场方向
         float Hx = 0.5f, Hz = 0.5f;
@@ -601,8 +602,20 @@ void QuaternionEKF<X_SIZE, Z_SIZE>::User_Func_xhatUpdate()
     arm_matrix_instance_f32 temp;
     float temp_data[6] = {0};
     arm_mat_init_f32(&temp, nv, 1, temp_data);
-    arm_mat_mult_f32(&this->temp_matrix1, &rk, &temp); // temp = inv(S) * rk
-    arm_mat_mult_f32(&rk, &temp, &rkT_rk);              // rkT_rk = rk' * inv(S) * rk
+
+    // 当 nv < Z_SIZE 时，取 inv(S) 的左上角 nv×nv 子矩阵
+    arm_matrix_instance_f32 S_sub;
+    float S_sub_data[49]; // 最大 7×7 (X_SIZE=7, Z_SIZE=6, nv最大为6)
+    if (nv < Z_SIZE)
+    {
+        arm_mat_init_f32(&S_sub, nv, nv, S_sub_data);
+        for (uint8_t i = 0; i < nv; i++)
+            for (uint8_t j = 0; j < nv; j++)
+                S_sub_data[i * nv + j] = this->temp_matrix_data1[i * Z_SIZE + j];
+    }
+
+    arm_mat_mult_f32(nv < Z_SIZE ? &S_sub : &this->temp_matrix1, &rk, &temp); // temp = inv(S) * rk
+    arm_mat_mult_f32(&rk, &temp, &rkT_rk);                                    // rkT_rk = rk' * inv(S) * rk
     m_chi_square = rkT_data[0];
 
     // 收敛和稳定判断
@@ -645,8 +658,26 @@ void QuaternionEKF<X_SIZE, Z_SIZE>::User_Func_xhatUpdate()
     }
 
     // 计算卡尔曼增益 K = P'·HT·inv(S)
-    this->MatStatus = arm_mat_mult_f32(&this->Pminus, &this->HT, &this->temp_matrix);
-    this->MatStatus = arm_mat_mult_f32(&this->temp_matrix, &this->temp_matrix1, &this->K);
+    // 当 nv < Z_SIZE 时,只取 HT 的前 nv 列和 inv(S) 的左上角 nv×nv
+    if (nv < Z_SIZE)
+    {
+        // HT_sub: X_SIZE × nv, 从 temp_matrix 提取前 nv 列
+        // temp_matrix1_sub: nv × nv, 从 temp_matrix1 提取左上角
+        arm_matrix_instance_f32 HT_sub;
+        arm_mat_init_f32(&HT_sub, X_SIZE, nv, &this->HT_data[0]);
+        arm_matrix_instance_f32 S_sub_inv;
+        arm_mat_init_f32(&S_sub_inv, nv, nv, S_sub_data);
+        arm_matrix_instance_f32 K_temp;
+        float K_temp_data[7 * 6];
+        arm_mat_init_f32(&K_temp, X_SIZE, nv, K_temp_data);
+        this->MatStatus = arm_mat_mult_f32(&this->Pminus, &HT_sub, &K_temp);
+        this->MatStatus = arm_mat_mult_f32(&K_temp, &S_sub_inv, &this->K);
+    }
+    else
+    {
+        this->MatStatus = arm_mat_mult_f32(&this->Pminus, &this->HT, &this->temp_matrix);
+        this->MatStatus = arm_mat_mult_f32(&this->temp_matrix, &this->temp_matrix1, &this->K);
+    }
 
     // 自适应增益缩放
     for (size_t i = 0; i < X_SIZE; i++)
@@ -731,7 +762,7 @@ void QuaternionEKF<X_SIZE, Z_SIZE>::Update(float gx, float gy, float gz,
     this->z_input[1] = m_accel_filtered[1] * acc_norm;
     this->z_input[2] = m_accel_filtered[2] * acc_norm;
 
-    if (m_use_magnetometer && Z_SIZE >= 6)
+    if (m_use_magnetometer && Z_SIZE >= 6 && m_mag_valid)
     {
         float mag_norm = fastInvSqrt(m_mag_filtered[0] * m_mag_filtered[0] +
                                      m_mag_filtered[1] * m_mag_filtered[1] +
@@ -780,7 +811,9 @@ void QuaternionEKF<X_SIZE, Z_SIZE>::UpdateAccelOnly(float gx, float gy, float gz
                                                     float ax, float ay, float az,
                                                     float dt)
 {
+    m_mag_valid = false; // 本周期仅使用加速度计
     Update(gx, gy, gz, ax, ay, az, 0, 0, 0, dt);
+    m_mag_valid = true; // 恢复默认状态
 }
 
 #endif // QUATERNION_EKF_HPP

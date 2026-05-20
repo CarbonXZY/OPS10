@@ -22,31 +22,20 @@ void Class_Chariot::TIM_Calculate_PeriodElapsedCallback()
     dt = DWT_GetDeltaT(&dwt_cnt);
     Update_SensorData();
 
-    //    MahonyAHRSupdate(
-    //         icm42688.Get_GyrX(), icm42688.Get_GyrY(), icm42688.Get_GyrZ(),
-    //         icm42688.Get_AccX(), icm42688.Get_AccY(), icm42688.Get_AccZ(),
-    //         mmc5983.magnet_data.x, mmc5983.magnet_data.y, mmc5983.magnet_data.z);
-
-    //    IMU_QuaternionEKF_Update(
-    //        icm42688.Get_GyrX() / 180.0f * PI, icm42688.Get_GyrY() / 180.0f * PI, icm42688.Get_GyrZ() / 180.0f * PI,
-    //        icm42688.Get_AccX(), icm42688.Get_AccY(), icm42688.Get_AccZ(), dt);
-
+    // 动态裁剪: 1ms周期用6轴, 每10ms周期用9轴
+    m_mag_cycle++;
+    if (m_mag_cycle >= 10)
+    {
         EKF.Update(icm42688.Get_GyrX() / 180.0f * PI, icm42688.Get_GyrY() / 180.0f * PI, icm42688.Get_GyrZ() / 180.0f * PI,
                     icm42688.Get_AccX(), icm42688.Get_AccY(), icm42688.Get_AccZ(),
                     mmc5983.magnet_data.x_gauss, mmc5983.magnet_data.y_gauss, mmc5983.magnet_data.z_gauss, dt);
-    
-
-    
-        //    Update_Position();
-        //    Update_Servo();
-        //    Update_CAN();
-        //    Update_Bluetooth();
-        //    Update_Display();
-    
-        //    if (dt > 0.02f) dt = 0.02f; // 限制最大dt以防止异常值
-    
-        //    printf("dt: %.4f s\n", dt);
-    // Calculate_Position();
+        m_mag_cycle = 0;
+    }
+    else
+    {
+        EKF.UpdateAccelOnly(icm42688.Get_GyrX() / 180.0f * PI, icm42688.Get_GyrY() / 180.0f * PI, icm42688.Get_GyrZ() / 180.0f * PI,
+                             icm42688.Get_AccX(), icm42688.Get_AccY(), icm42688.Get_AccZ(), dt);
+    }
 }
 
 void Class_Chariot::TIM_Communicate_PeriodElapsedCallback()

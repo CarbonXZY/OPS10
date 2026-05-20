@@ -43,6 +43,8 @@ private:
 
     uint32_t dwt_cnt = 0; // DWT计数器，用于计算时间增量
 
+    uint32_t m_mag_cycle = 0; // 磁力计动态裁剪计数器
+
     void Update_SensorData();
     void Calculate_Position();
 };
