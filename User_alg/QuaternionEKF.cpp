@@ -14,7 +14,6 @@
  ******************************************************************************
  */
 #include "QuaternionEKF.h"
-#include "stm32h5xx_hal.h"
 
 QEKF_INS_t QEKF_INS;
 
@@ -32,23 +31,6 @@ float IMU_QuaternionEKF_P[36] = {100000, 0.1, 0.1, 0.1, 0.1, 0.1,
                                  0.1, 0.1, 0.1, 0.1, 0.1, 100};
 float IMU_QuaternionEKF_K[18];
 float IMU_QuaternionEKF_H[18];
-
-/**
- * @brief 静止时采样z轴陀螺偏置,消除yaw零飘
- * @param get_gz 获取陀螺z轴原始值的函数指针(rad/s)
- * @param samples 采样次数
- * @param interval_ms 采样间隔(ms)
- */
-void IMU_QuaternionEKF_CalibrateZBias(float (*get_gz)(void), int samples, int interval_ms)
-{
-    float sum = 0.0f;
-    for (int i = 0; i < samples; i++)
-    {
-        sum += get_gz();
-        HAL_Delay(interval_ms);
-    }
-    QEKF_INS.GyroBias[2] = sum / (float)samples;
-}
 
 static float invSqrt(float x);
 static void IMU_QuaternionEKF_Observe(KalmanFilter_t *kf);
@@ -216,7 +198,7 @@ void IMU_QuaternionEKF_Update(float gx, float gy, float gz, float ax, float ay, 
     QEKF_INS.q[3] = QEKF_INS.IMU_QuaternionEKF.FilteredValue[3];
     QEKF_INS.GyroBias[0] = QEKF_INS.IMU_QuaternionEKF.FilteredValue[4];
     QEKF_INS.GyroBias[1] = QEKF_INS.IMU_QuaternionEKF.FilteredValue[5];
-    //QEKF_INS.GyroBias[2] = 0; // 大部分时候z轴通天,无法观测yaw的漂移
+    QEKF_INS.GyroBias[2] = 0; // 大部分时候z轴通天,无法观测yaw的漂移
 
     // 利用四元数反解欧拉角
     QEKF_INS.Yaw = atan2f(2.0f * (QEKF_INS.q[0] * QEKF_INS.q[3] + QEKF_INS.q[1] * QEKF_INS.q[2]), 2.0f * (QEKF_INS.q[0] * QEKF_INS.q[0] + QEKF_INS.q[1] * QEKF_INS.q[1]) - 1.0f) * 57.295779513f;

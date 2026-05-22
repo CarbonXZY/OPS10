@@ -14,7 +14,7 @@
 class Class_Chariot
 {
 public:
-    QuaternionEKF<7, 6> EKF; // 四元数EKF，状态维度7（4四元数+3陀螺仪零偏），观测维度6（3加速度计+3磁力计）
+    //QuaternionEKF<7, 6> EKF; // 四元数EKF，状态维度7（4四元数+3陀螺仪零偏），观测维度6（3加速度计+3磁力计）
     // 传感器对象
     // BMP388气压计
     Class_BMP388 bmp388;
@@ -29,9 +29,27 @@ public:
     Class_MT6816 mt6816_x;
     Class_MT6816 mt6816_y;
 
+    
+    bool is_magnetometer_valid = false; // 磁力计数据有效标志
+
+    float yaw_mag = 0.0f;
+    float yaw_mag_offset = 0.0f; // 磁力计航向偏移值，需根据实际情况标定
+    float yaw_kalman = 0.0f;
+    float gyro_z_kalman = 0.0f;
+
+    float bias_lpf_alpha = 0.8f; // 零偏低通滤波系数，范围0-1，值越小滤波越平滑但响应越慢
+    float gyro_bias = 0.0f; // 陀螺仪零偏估计值
     void Init();
     void TIM_Calculate_PeriodElapsedCallback();
     void TIM_Communicate_PeriodElapsedCallback();
+
+private:
+    float yaw_kalman_P = 1.0f;
+    float yaw_kalman_Q = 100.0f;
+    float yaw_kalman_R = 1.0f;
+
+    float NormalizeAngle(float angle);
+    void UpdateYawKalman(float gyro_z, float yaw_meas, float dt);
 
 private:
     float Position_X = 0.0f;
@@ -43,8 +61,8 @@ private:
 
     uint32_t dwt_cnt = 0; // DWT计数器，用于计算时间增量
 
-    uint32_t m_mag_cycle = 0; // 磁力计动态裁剪计数器
 
+    
     void Update_SensorData();
     void Calculate_Position();
 };

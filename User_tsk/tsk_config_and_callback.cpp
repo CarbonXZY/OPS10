@@ -31,7 +31,32 @@ void Task1ms_TIM2_Callback()
     chariot.TIM_Communicate_PeriodElapsedCallback();
 }
 
+static float invSqrt(float x)
+{
+    float halfx = 0.5f * x;
+    float y = x;
+    long i = *(long *)&y;
+    i = 0x5f375a86 - (i >> 1);
+    y = *(float *)&i;
+    y = y * (1.5f - (halfx * y * y));
+    return y;
+}
+
+
 void Task10ms_TIM3_Callback()
 {
-    chariot.mmc5983.ReadMagnet();
+    if(chariot.mmc5983.ReadMagnet() == MMC5983MA_OK)
+    {
+        chariot.is_magnetometer_valid = true;
+    }
+    else
+    {
+        chariot.is_magnetometer_valid = false;
+    }
+    float mag_x = chariot.mmc5983.magnet_data.x_gauss - 0.05f;
+    float mag_y = chariot.mmc5983.magnet_data.y_gauss - 0.05f;
+
+
+    chariot.yaw_mag = atan2f(mag_y, mag_x) * 180.0f / PI - chariot.yaw_mag_offset;
 }
+

@@ -149,7 +149,7 @@ private:
 // ==================== 构造函数 ====================
 template <size_t X_SIZE, size_t Z_SIZE>
 QuaternionEKF<X_SIZE, Z_SIZE>::QuaternionEKF()
-    : m_chi_square_threshold(1e-8f), m_converge_flag(false), m_stable_flag(false), m_error_count(0), m_update_count(0), m_yaw_round_count(0), m_yaw_last(0), m_yaw_total(0), m_mag_valid(true)
+    : m_chi_square_threshold(10.0f), m_converge_flag(false), m_stable_flag(false), m_error_count(0), m_update_count(0), m_yaw_round_count(0), m_yaw_last(0), m_yaw_total(0), m_mag_valid(true)
 {
 }
 
@@ -297,7 +297,7 @@ void QuaternionEKF<X_SIZE, Z_SIZE>::Reset()
     m_adaptive_gain_scale = 1.0f;
     m_chi_square = 0.0f;
 
-    m_chi_square_threshold = 1e-8f;
+    m_chi_square_threshold = 10.0f;
     // 重置滤波后的传感器数据
     m_accel_filtered[0] = m_accel_filtered[1] = m_accel_filtered[2] = 0;
     m_mag_filtered[0] = m_mag_filtered[1] = m_mag_filtered[2] = 0;
