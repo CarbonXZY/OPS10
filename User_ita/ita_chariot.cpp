@@ -1,5 +1,11 @@
 #include "ita_chariot.h"
+#include <algorithm>
+#include <array>
+#include <numeric>
 
+static std::array<float, 100> mag_x_buffer = {0};
+static std::array<float, 100> mag_y_buffer = {0};
+uint8_t mag_buffer_index = 0;
 void Class_Chariot::Init()
 {
     // 传感器初始化
@@ -15,11 +21,35 @@ void Class_Chariot::Init()
 
     mmc5983.ReadMagnetOffset();
 
-    mmc5983.ReadMagnet();
-    float mag_x = mmc5983.magnet_data.x_gauss - 0.05f;
-    float mag_y = mmc5983.magnet_data.y_gauss - 0.05f;
+    while (!start_calibration)
+    {
+        // 等待校准开始的标志
+        HAL_Delay(100);
+    }
 
-   // yaw_mag_offset = atan2f(mag_y, mag_x) * 180.0f / PI;
+    while (start_calibration)
+    {
+        if (mmc5983.ReadMagnet() == MMC5983MA_OK)
+        {
+            // 将新的磁力计数据加入缓冲区
+            std::rotate(mag_x_buffer.begin(), mag_x_buffer.begin() + 1, mag_x_buffer.end());
+            std::rotate(mag_y_buffer.begin(), mag_y_buffer.begin() + 1, mag_y_buffer.end());
+            mag_x_buffer.back() = mmc5983.magnet_data.x_gauss;
+            mag_y_buffer.back() = mmc5983.magnet_data.y_gauss;
+            mag_buffer_index++;
+        }
+
+        mag_x_max = *std::max_element(mag_x_buffer.begin(), mag_x_buffer.end());
+        mag_x_min = *std::min_element(mag_x_buffer.begin(), mag_x_buffer.end());
+        mag_y_max = *std::max_element(mag_y_buffer.begin(), mag_y_buffer.end());
+        mag_y_min = *std::min_element(mag_y_buffer.begin(), mag_y_buffer.end());
+
+        HAL_Delay(100);
+    }
+
+    mag_x_offset = (mag_x_max + mag_x_min) / 2.0f;
+    mag_y_offset = (mag_y_max + mag_y_min) / 2.0f;
+    mag_y_x_scale = (mag_y_max - mag_y_min) / (mag_x_max - mag_x_min);
 }
 
 float dt = 0.0f;
@@ -28,7 +58,7 @@ void Class_Chariot::TIM_Calculate_PeriodElapsedCallback()
     dt = DWT_GetDeltaT(&dwt_cnt);
     Update_SensorData();
 
-    //    // 动态裁剪: 1ms周期用6轴, 每10ms周期用9轴
+    // 动态裁剪: 1ms周期用6轴, 每10ms周期用9轴
     // if (is_magnetometer_valid)
     // {
     //     EKF.Update(icm42688.Get_GyrX() / 180.0f * PI, icm42688.Get_GyrY() / 180.0f * PI, icm42688.Get_GyrZ() / 180.0f * PI,
@@ -92,35 +122,6 @@ float Class_Chariot::NormalizeAngle(float angle)
         angle += 360.0f;
     return angle;
 }
-
-// void Class_Chariot::UpdateYawKalman(float gyro_z, float yaw_meas, float dt)
-// {
-//     float gyro_z_deg = gyro_z * 180.0f / PI;
-    
-//     // 【修改 1】预测时，直接扣除上一次计算出来的零偏
-//     float yaw_predict = yaw_kalman + gyro_z_deg  * dt;
-//     yaw_predict = NormalizeAngle(yaw_predict);
-
-//     float residual = NormalizeAngle(yaw_meas - yaw_predict);
-
-//     yaw_kalman_P += yaw_kalman_Q * dt;
-
-//     float K = yaw_kalman_P / (yaw_kalman_P + yaw_kalman_R);
-
-//     // 【修改 2】核心：在更新 yaw 之前，计算由零偏导致的步长误差，并通过低通滤波累加给 gyro_bias
-//     // K * residual 是卡尔曼给角度的修正量，除以 dt 变换回角速度维度 (deg/s)
-//     float instant_bias = (K * residual) / dt;
-    
-//     // 一阶低通滤波，慢慢把这个零偏“吸”出来
-//     gyro_bias += bias_lpf_alpha * instant_bias; 
-
-//     // 后续逻辑完全保持你原来的样子不变
-//     yaw_kalman = yaw_predict + K * residual;
-//     yaw_kalman = NormalizeAngle(yaw_kalman);
-
-//     yaw_kalman_P = (1.0f - K) * yaw_kalman_P;
-    
-// }
 
 void Class_Chariot::UpdateYawKalman(float gyro_z, float yaw_meas, float dt)
 {

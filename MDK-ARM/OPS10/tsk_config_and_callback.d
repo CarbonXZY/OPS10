@@ -55,7 +55,6 @@ ops10/tsk_config_and_callback.o: ..\User_tsk\tsk_config_and_callback.cpp \
   ..\Drivers\CMSIS\DSP\Include\dsp\filtering_functions.h \
   ..\Drivers\CMSIS\DSP\Include\dsp\quaternion_math_functions.h \
   ..\User_alg\QuaternionEKF.h ..\User_alg\kalman_filter.h \
-  ..\User_alg\Quaternion_EKF.hpp ..\User_alg\kalman_filter.hpp \
   ..\User_drv\drv_can.h ..\User_dvc\dvc_BMP388.h ..\Core\Inc\i2c.h \
   ..\User_dvc\dvc_ICM42688.h ..\User_dvc\dvc_MMC5983.h \
   ..\User_dvc\dvc_MT6816.h

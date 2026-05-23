@@ -92,17 +92,12 @@ virtualFolder:
       folders: []
     - name: User_alg
       files:
-        - path: ../User_alg/alg_fsm.cpp
-        - path: ../User_alg/alg_fsm.h
         - path: ../User_alg/QuaternionEKF.cpp
         - path: ../User_alg/QuaternionEKF.h
         - path: ../User_alg/kalman_filter.cpp
         - path: ../User_alg/kalman_filter.h
         - path: ../User_alg/Mahony.cpp
         - path: ../User_alg/Mahony.h
-        - path: ../User_alg/kalman_filter.hpp
-        - path: ../User_alg/Quaternion_EKF.hpp
-        - path: ../User_alg/Matrix.hpp
       folders: []
     - name: User_ita
       files:
