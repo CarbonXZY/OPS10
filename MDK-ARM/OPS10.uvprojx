@@ -684,6 +684,21 @@
               <FileType>5</FileType>
               <FilePath>..\User_dvc\dvc_MMC5983.h</FilePath>
             </File>
+            <File>
+              <FileName>dvc_LSM6DSV16X.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\User_dvc\dvc_LSM6DSV16X.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>dvc_LSM6DSV16X.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\User_dvc\dvc_LSM6DSV16X.h</FilePath>
+            </File>
+            <File>
+              <FileName>dvc_LSM6DSV16X_reg.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\User_dvc\dvc_LSM6DSV16X_reg.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

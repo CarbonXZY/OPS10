@@ -10,6 +10,7 @@
 #include "dvc_MMC5983.h"
 #include "dvc_MT6816.h"
 #include "dvc_dwt.h"
+#include "dvc_LSM6DSV16X.h"
 class Class_Chariot
 {
 public:
@@ -18,8 +19,11 @@ public:
     //  BMP388气压计
     Class_BMP388 bmp388;
 
-    // ICM42688陀螺仪和加速度计
-    Class_ICM42688 icm42688;
+    // // ICM42688陀螺仪和加速度计
+    // Class_ICM42688 icm42688;
+
+    // LSM6DSV16X陀螺仪和加速度计
+    Class_LSM6DSV16X lsm6dsv16x;
 
     // MMC5983磁力计
     Class_MMC5983 mmc5983;
@@ -38,11 +42,15 @@ public:
     float mag_x_min = 0.0f;
     float mag_y_max = 0.0f;
     float mag_y_min = 0.0f;
-    float mag_y_x_scale = 1.0f; 
+    float mag_y_x_scale = 1.0f;
 
     float mag_x_offset = 0.0f; // 磁力计X轴偏置
     float mag_y_offset = 0.0f; // 磁力计Y轴偏置
     // float mag_z_offset = 0.0f; // 磁力计Z轴偏置
+
+    float base_pitch = 0.0f;                    // 基准俯仰角
+    float base_roll = 0.0f;                     // 基准横滚角
+    bool is_roll_pitch_base_calibrated = false; // 是否完成俯仰角和横滚角基准校准
 
     void Init();
     void TIM_Calculate_PeriodElapsedCallback();
@@ -70,5 +78,6 @@ private:
 
     void Update_SensorData();
     void Calculate_Position();
+    void Calibrate_Magnetometer();
 };
 #endif

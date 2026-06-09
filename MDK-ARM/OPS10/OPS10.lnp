@@ -44,6 +44,7 @@
 "ops10\dvc_mt6816.o"
 "ops10\dvc_dwt.o"
 "ops10\dvc_mmc5983.o"
+"ops10\dvc_lsm6dsv16x.o"
 "ops10\quaternionekf.o"
 "ops10\kalman_filter.o"
 "ops10\mahony.o"

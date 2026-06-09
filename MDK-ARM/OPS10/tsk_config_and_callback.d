@@ -57,4 +57,5 @@ ops10/tsk_config_and_callback.o: ..\User_tsk\tsk_config_and_callback.cpp \
   ..\User_alg\QuaternionEKF.h ..\User_alg\kalman_filter.h \
   ..\User_drv\drv_can.h ..\User_dvc\dvc_BMP388.h ..\Core\Inc\i2c.h \
   ..\User_dvc\dvc_ICM42688.h ..\User_dvc\dvc_MMC5983.h \
-  ..\User_dvc\dvc_MT6816.h
+  ..\User_dvc\dvc_MT6816.h ..\User_dvc\dvc_LSM6DSV16X.h \
+  ..\User_dvc\dvc_LSM6DSV16X_reg.h

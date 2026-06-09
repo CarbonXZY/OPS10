@@ -89,6 +89,9 @@ virtualFolder:
         - path: ../User_dvc/dvc_dwt.h
         - path: ../User_dvc/dvc_MMC5983.cpp
         - path: ../User_dvc/dvc_MMC5983.h
+        - path: ../User_dvc/dvc_LSM6DSV16X.cpp
+        - path: ../User_dvc/dvc_LSM6DSV16X.h
+        - path: ../User_dvc/dvc_LSM6DSV16X_reg.h
       folders: []
     - name: User_alg
       files:
@@ -146,7 +149,8 @@ targets:
         - RTE/_OPS10
       libList: []
     excludeList: []
-    settings: {}
+    settings:
+      debugger: cortex-debug
     toolchain: AC6
     toolchainConfigMap:
       AC6:

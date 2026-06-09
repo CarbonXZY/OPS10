@@ -6,6 +6,7 @@
 #include "stm32h5xx_hal.h"
 
 bool init_finished = false;
+
 Class_Chariot chariot;
 
 void Task_Init(void)
@@ -17,7 +18,7 @@ void Task_Init(void)
     SPI_Init(&hspi3, nullptr);
     TIM_Init(&htim2, Task1ms_TIM2_Callback);
     TIM_Init(&htim3, Task10ms_TIM3_Callback);
-    chariot.Init();
+//    chariot.Init();
 
     HAL_TIM_Base_Start_IT(&htim2);
     HAL_TIM_Base_Start_IT(&htim3);
@@ -27,7 +28,7 @@ void Task_Init(void)
 
 void Task1ms_TIM2_Callback()
 {
-    chariot.TIM_Calculate_PeriodElapsedCallback();
+//    chariot.TIM_Calculate_PeriodElapsedCallback();
     chariot.TIM_Communicate_PeriodElapsedCallback();
 }
 
@@ -44,21 +45,25 @@ static float invSqrt(float x)
 
 void Task10ms_TIM3_Callback()
 {
-    if (chariot.mmc5983.ReadMagnet() == MMC5983MA_OK)
-    {
-        chariot.is_magnetometer_valid = true;
-    }
-    else
-    {
-        chariot.is_magnetometer_valid = false;
-    }
-    float mag_x = chariot.mmc5983.magnet_data.x_gauss - chariot.mag_x_offset;
-    float mag_y = chariot.mmc5983.magnet_data.y_gauss - chariot.mag_y_offset;
-    float mag_z = chariot.mmc5983.magnet_data.z_gauss;
 
-    //    float mag_horizontal_x = mag_x * arm_cos_f32(QEKF_INS.Pitch * PI / 180.0f) + mag_y * arm_sin_f32(QEKF_INS.Roll * PI / 180.0f) * arm_cos_f32(QEKF_INS.Pitch * PI / 180.0f) + mag_z * arm_sin_f32(QEKF_INS.Pitch * PI / 180.0f) * arm_cos_f32(QEKF_INS.Roll * PI / 180.0f) ;
-    //    float mag_horizontal_y = mag_y * arm_cos_f32(QEKF_INS.Roll * PI / 180.0f) - mag_z * arm_sin_f32(QEKF_INS.Roll * PI / 180.0f);
-    //
-    //    chariot.yaw_mag = atan2f(mag_horizontal_y, mag_horizontal_x) * 180.0f / PI - chariot.yaw_mag_offset;
-    chariot.yaw_mag = atan2f(mag_y, mag_x * chariot.mag_y_x_scale) * 180.0f / PI;
+//    chariot.mmc5983.ReadMagnet();
+
+//    float mag_x = chariot.mmc5983.magnet_data.x_gauss - chariot.mag_x_offset;
+//    float mag_y = chariot.mmc5983.magnet_data.y_gauss - chariot.mag_y_offset;
+//    float mag_z = chariot.mmc5983.magnet_data.z_gauss;
+
+//    if (chariot.is_magnetometer_valid)
+//    {
+////        if (Math_Abs(QEKF_INS.Pitch - chariot.base_pitch) > 1.0f || Math_Abs(QEKF_INS.Roll - chariot.base_roll) > 1.0f)
+////        {
+////            // 如果当前俯仰角或横滚角与基准值相差较大，说明姿态不稳定，暂不更新磁力计航向
+////            return;
+////        }
+//        chariot.yaw_mag = atan2f(mag_y, mag_x * chariot.mag_y_x_scale) * 180.0f / PI - chariot.yaw_mag_offset;
+//    }
+//    else
+//    {
+//        chariot.yaw_mag_offset = atan2f(mag_y, mag_x * chariot.mag_y_x_scale) * 180.0f / PI;
+//        chariot.is_magnetometer_valid = true;
+//    }
 }
