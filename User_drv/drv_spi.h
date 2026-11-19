@@ -57,6 +57,9 @@ extern Struct_SPI_Manage_Object SPI3_Manage_Object;
 
 /* Exported function declarations ---------------------------------------------*/
 
+HAL_StatusTypeDef SPI_TransferWithCS(SPI_HandleTypeDef *hspi, GPIO_TypeDef *port, uint16_t pin,
+                                      const uint8_t *tx, uint8_t *rx, uint16_t size);
+
 void SPI_Init(SPI_HandleTypeDef *hspi, SPI_Call_Back Callback_Function);
 
 uint8_t SPI_Send_Receive_Data(SPI_HandleTypeDef *hspi, GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin, uint16_t Tx_Length, uint16_t Rx_Length);

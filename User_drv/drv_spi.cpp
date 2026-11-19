@@ -145,3 +145,57 @@ void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi)
 }
 
 /************************ COPYRIGHT(C) ROBOPIONEER **************************/
+
+HAL_StatusTypeDef SPI_TransferWithCS(SPI_HandleTypeDef *hspi, GPIO_TypeDef *port, uint16_t pin,
+                                      const uint8_t *tx, uint8_t *rx, uint16_t size)
+{
+    if (!hspi || !port || !tx || !rx || size == 0U)
+        return HAL_ERROR;
+    if (hspi->State != HAL_SPI_STATE_READY)
+        return HAL_BUSY;
+    __HAL_LOCK(hspi);
+    hspi->State = HAL_SPI_STATE_BUSY_TX_RX;
+
+    SPI_TypeDef *spi = hspi->Instance;
+    MODIFY_REG(spi->CR2, SPI_CR2_TSIZE, size);
+    __HAL_SPI_ENABLE(hspi);
+    HAL_GPIO_WritePin(port, pin, GPIO_PIN_RESET);
+
+    volatile uint8_t *tx_fifo = reinterpret_cast<volatile uint8_t *>(&spi->TXDR);
+    volatile uint8_t *rx_fifo = reinterpret_cast<volatile uint8_t *>(&spi->RXDR);
+    *tx_fifo = tx[0];
+    SET_BIT(spi->CR1, SPI_CR1_CSTART);
+    uint16_t sent = 1U;
+    uint16_t received = 0U;
+    // DWT keeps counting while TIM2 preempts SysTick.
+    const uint32_t started = DWT->CYCCNT;
+    const uint32_t timeout_cycles = SystemCoreClock / 1000U;
+    HAL_StatusTypeDef result = HAL_OK;
+    for (;;)
+    {
+        const uint32_t flags = spi->SR;
+        if (flags & (SPI_SR_OVR | SPI_SR_MODF | SPI_SR_TIFRE | SPI_SR_UDR))
+        {
+            result = HAL_ERROR;
+            break;
+        }
+        if (received < size && (flags & SPI_SR_RXP))
+            rx[received++] = *rx_fifo;
+        if (sent < size && (flags & SPI_SR_TXP))
+            *tx_fifo = tx[sent++];
+        if (received == size && (flags & SPI_SR_EOT))
+            break;
+        if (DWT->CYCCNT - started >= timeout_cycles)
+        {
+            result = HAL_TIMEOUT;
+            break;
+        }
+    }
+    HAL_GPIO_WritePin(port, pin, GPIO_PIN_SET);
+    __HAL_SPI_DISABLE(hspi);
+    spi->IFCR = SPI_IFCR_EOTC | SPI_IFCR_TXTFC | SPI_IFCR_OVRC |
+                SPI_IFCR_MODFC | SPI_IFCR_TIFREC | SPI_IFCR_UDRC;
+    hspi->State = HAL_SPI_STATE_READY;
+    __HAL_UNLOCK(hspi);
+    return result;
+}

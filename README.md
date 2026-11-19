@@ -15,7 +15,13 @@
 
 ​	建议如果只测CAN的话，建议单开一个工程，只开CAN和TIM中断，看能不能发出去数据。
 
-2、磁编（MT6816）收不到数据，初步断定是硬件问题，到时候他们硬件改好后可以试试。
+## LSM6DSV16X 和 MT6816 采样
+
+TIM2 每 1 ms 触发一次采样，依次读取板载 LSM6DSV16X（SPI2 / PB12）、左侧 MT6816（SPI1 / PC1）和右侧 MT6816（SPI3 / PA0）。这里的 GPIO 引脚是各器件的片选。
+
+三路共用 SPI_TransferWithCS()。每笔事务先设置传输长度、使能 SPI，使 Mode 3 的时钟回到高电平，然后拉低片选、启动时钟。接收完成后先释放片选，再关闭 SPI。函数用 DWT 周期计数器限制等待时间，可在 TIM2 中断中超时返回。MT6816 的角度高、低寄存器仍分次读取，偶校验包含弱磁状态位。
+
+本板 SPI2 和 SPI3 使用 32 分频，关闭 MasterKeepIOState；PB13 开内部下拉，PA1 无上下拉。Keil 编译目标为 MDK-ARM/OPS10.uvprojx 中的 OPS10，烧录文件为 MDK-ARM/OPS10/OPS10.hex。
 
 
 

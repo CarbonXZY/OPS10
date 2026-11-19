@@ -5,26 +5,6 @@
 #include "tsk_config_and_callback.h"
 #define PI 3.14159265f
 
-/**
- * @brief SPI 发送+接收底层封装
- */
-static HAL_StatusTypeDef SPI_Transmit_Receive(SPI_HandleTypeDef *hspi,
-                                               uint8_t *tx_data,
-                                               uint8_t *rx_data,
-                                               uint16_t size)
-{
-    if (hspi == nullptr || tx_data == nullptr || rx_data == nullptr || size == 0)
-    {
-        return HAL_ERROR;
-    }
-
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
-    HAL_SPI_TransmitReceive(hspi, tx_data, rx_data, size, 100);
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET);
-
-    return HAL_OK;
-}
-
 // ======================== Init ========================
 
 int Class_LSM6DSV16X::Init(SPI_HandleTypeDef *hspi, GPIO_TypeDef *cs_port, uint16_t cs_pin)
@@ -84,8 +64,7 @@ int Class_LSM6DSV16X::Init(SPI_HandleTypeDef *hspi, GPIO_TypeDef *cs_port, uint1
 
 uint8_t Class_LSM6DSV16X::SPI_Transfer(uint8_t *tx_data, uint8_t *rx_data, uint16_t size)
 {
-    uint8_t result = SPI_Transmit_Receive(_hspi, tx_data, rx_data, size);
-    return result;
+    return SPI_TransferWithCS(_hspi, _cs_port, _cs_pin, tx_data, rx_data, size);
 }
 
 // ======================== Register R/W ========================

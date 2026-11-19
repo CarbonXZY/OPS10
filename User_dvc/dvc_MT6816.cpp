@@ -16,28 +16,6 @@
 // 跨平台用
 #define Write_Pin HAL_GPIO_WritePin
 
-static HAL_StatusTypeDef SPI_Transmit_Receive(SPI_HandleTypeDef *hspi, uint8_t *tx_data, uint8_t *rx_data, uint16_t size)
-{
-    if (hspi == nullptr || tx_data == nullptr || rx_data == nullptr || size == 0)
-    {
-        return HAL_ERROR; // 参数检查
-    }
-
-    if (hspi->Instance == SPI1)
-    {
-        HAL_GPIO_WritePin(SPI1_Manage_Object.Now_GPIOx, SPI1_Manage_Object.Now_GPIO_Pin, GPIO_PIN_RESET); // 片选拉低
-        HAL_SPI_TransmitReceive(hspi, tx_data, rx_data, size, 100);
-        HAL_GPIO_WritePin(SPI1_Manage_Object.Now_GPIOx, SPI1_Manage_Object.Now_GPIO_Pin, GPIO_PIN_SET); // 片选拉高
-    }
-    else if (hspi->Instance == SPI3)
-    {
-        HAL_GPIO_WritePin(SPI3_Manage_Object.Now_GPIOx, SPI3_Manage_Object.Now_GPIO_Pin, GPIO_PIN_RESET); // 片选拉低
-        HAL_SPI_TransmitReceive(hspi, tx_data, rx_data, size, 100);
-        HAL_GPIO_WritePin(SPI3_Manage_Object.Now_GPIOx, SPI3_Manage_Object.Now_GPIO_Pin, GPIO_PIN_SET); // 片选拉高
-    }
-    return HAL_OK;
-}
-
 /**
  * @brief 初始化 MT6816 传感器
  *
@@ -76,7 +54,8 @@ void Class_MT6816::Init(SPI_HandleTypeDef *_hspi, GPIO_TypeDef *_cs_gpio_port, u
  */
 uint8_t Class_MT6816::SPI_Transfer(uint8_t *tx_data, uint8_t *rx_data, uint16_t size)
 {
-    return SPI_Transmit_Receive(SPI_Manage_Object->SPI_Handler, tx_data, rx_data, size);
+    return SPI_TransferWithCS(SPI_Manage_Object->SPI_Handler, SPI_Manage_Object->Now_GPIOx,
+                              SPI_Manage_Object->Now_GPIO_Pin, tx_data, rx_data, size);
 }
 
 /**
@@ -174,7 +153,7 @@ uint8_t Class_MT6816::ReadAngle(void)
     uint8_t over_speed = (status_reg >> 3) & 0x01;    // 超速报警位
 
     // 计算奇偶校验（偶校验）
-    uint8_t data_for_parity = angle_high ^ ((angle_low >> 2) & 0x3F);
+    uint8_t data_for_parity = angle_high ^ (angle_low >> 1);
     uint8_t parity_calc = 0;
 
     // 计算数据中的1的个数
