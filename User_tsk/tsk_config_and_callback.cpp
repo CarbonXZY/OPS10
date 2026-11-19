@@ -18,7 +18,7 @@ void Task_Init(void)
     SPI_Init(&hspi3, nullptr);
     TIM_Init(&htim2, Task1ms_TIM2_Callback);
     TIM_Init(&htim3, Task10ms_TIM3_Callback);
-//    chariot.Init();
+    chariot.Init();
 
     HAL_TIM_Base_Start_IT(&htim2);
     HAL_TIM_Base_Start_IT(&htim3);
@@ -28,7 +28,7 @@ void Task_Init(void)
 
 void Task1ms_TIM2_Callback()
 {
-//    chariot.TIM_Calculate_PeriodElapsedCallback();
+    chariot.TIM_Calculate_PeriodElapsedCallback();
     chariot.TIM_Communicate_PeriodElapsedCallback();
 }
 
